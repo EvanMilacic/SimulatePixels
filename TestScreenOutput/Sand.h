@@ -1,4 +1,5 @@
 #pragma once
+#include "Domain.h"
 #include "Material.h"
 
 namespace materie{
@@ -18,11 +19,12 @@ public:
 		damage = 0.0f;
 	};
 
-	~Sand();
+	~Sand() {};
 
 	void UpdateState(void) {};
 	void UpdatePosition(int index, simulate::Domain* domain) {
-		
+		int i = index
+
 	};
 
 private:
