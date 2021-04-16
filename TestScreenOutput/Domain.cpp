@@ -3,17 +3,19 @@
 namespace simulate {
 
 	bool Domain::move(int index, MoveDirs dir) {
-
+		//Get Motion vector
 		int* motion = getMotionVector(dir);
-
+		//Calculate the target cell
 		Index_t targetIndex = getDirIndex(index, motion);
-
+		//If cell is not occupied, move there
 		if (isDefault(targetIndex)) {
 			MatType temp = field[index];
 			field[index] = MatType::Default;
 			field[targetIndex] = temp;
+			return true;
 		}
 		else {
+			//If occupied, return false
 			return false;
 		}
 
