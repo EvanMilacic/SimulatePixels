@@ -5,7 +5,6 @@
 #include "Structs.h"
 #include "Enums.h"
 #include "MyMath.h"
-#include "Material.h"
 
 namespace simulate {
 
@@ -18,7 +17,7 @@ namespace simulate {
 		std::vector<MatType> field;
 
 		int CalcIndex(int i, int j) {
-			return nWidth * i + j;
+			return nWidth * j + i;
 		};
 		
 		int CalcIndex(Index2 ind) {
@@ -36,9 +35,7 @@ namespace simulate {
 
 
 	public:
-		Domain() {};
 		Domain(int width, int height) { setSize(width, height); };
-
 		~Domain() {};
 
 
@@ -71,6 +68,8 @@ namespace simulate {
 		//Getters
 		int getSize(void) { return nSize; };
 		int getWidth(void) { return nWidth; };
+
+		bool isOnEdge(Index_t index);
 
 		MatType at(int width, int height) {
 			int index = CalcIndex(width, height);

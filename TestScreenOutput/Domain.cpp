@@ -25,6 +25,7 @@ namespace simulate {
 
 		Index_t workingIndex, targetIndex;
 		workingIndex = index;
+		targetIndex = index;
 		//Get motion vector
 		Index2 motion = getMotionVector(dir);
 
@@ -76,10 +77,10 @@ namespace simulate {
 		// produces the correct motion vector in the grid
 		switch (dir) {
 		case MoveDirs::Down: {
-			Index2 motion = { 0,1 };
+			Index2 motion = { 0,-1 };
 			return motion; }
 		case MoveDirs::Up: {
-			Index2 motion = { 0,-1 };
+			Index2 motion = { 0,1 };
 			return motion; }
 		case MoveDirs::Left: {
 			Index2 motion = {-1,0 };
@@ -88,16 +89,16 @@ namespace simulate {
 			Index2 motion = {1,0};
 			return motion; }
 		case MoveDirs::LeftD: {
-			Index2 motion = { -1,1 };
+			Index2 motion = { -1,-1 };
 			return motion; }
 		case MoveDirs::LeftU: {
-			Index2 motion = { -1,-1};
+			Index2 motion = { -1,1};
 			return motion; }
 		case MoveDirs::RightD: {
-			Index2 motion = { 1,1 };
+			Index2 motion = { 1,-1 };
 			return motion; }
 		case MoveDirs::RightU: {
-			Index2 motion = { 1,-1 };
+			Index2 motion = { 1,1 };
 			return motion; }
 		default: {
 			Index2 motion = { 0,0 };
@@ -105,5 +106,18 @@ namespace simulate {
 		}
 
 	}
+
+	bool Domain::isOnEdge(Index_t index) {
+		Index2 ind = CalcIndex2(index);
+		if (ind.i == 0 || ind.i == nWidth) {
+			return true;
+		}
+		if (ind.j == 0 || ind.j == nHeight) {
+			return true;
+		}
+
+		return false;
+	}
+
 
 }
