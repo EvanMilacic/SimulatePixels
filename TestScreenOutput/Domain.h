@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 
+#include "Globals.h"
 #include "Structs.h"
+#include "Enums.h"
+#include "MyMath.h"
 #include "Material.h"
 
 namespace simulate {
-
-	enum class MoveDirs { Up, Down, Left, Right, LeftU, RightU, LeftD, RightD };
 
 	class Domain
 	{
@@ -14,11 +15,15 @@ namespace simulate {
 		int nWidth;
 		int nHeight;
 		int nSize;
-		std::vector<materie::MatType> field;
+		std::vector<MatType> field;
 
 		int CalcIndex(int i, int j) {
 			return nWidth * i + j;
 		};
+		
+		int CalcIndex(Index2 ind) {
+			return CalcIndex(ind.i, ind.j);
+		}
 
 		Index2 CalcIndex2(int index) {
 			Index2 indices{ index - floor(index / nWidth) * nWidth, floor(index / nWidth) };
@@ -26,7 +31,7 @@ namespace simulate {
 		}
 
 		bool isDefault(Index_t index) {
-
+			return (field[index] == MatType::Default);
 		}
 
 
@@ -45,30 +50,34 @@ namespace simulate {
 			field.resize(nSize);
 		}
 
-		void set(int width, int height, materie::MatType type) {
+		void set(int width, int height, MatType type) {
 			int index = CalcIndex(width, height);
 			field[index] = type;
 		}
 
-		void set(int index, materie::MatType type) {
+		void set(int index, MatType type) {
 			field[index] = type;
 		}
 
 		void clear(int width, int height) {
 			int index = CalcIndex(width, height);
-			field[index] = materie::MatType::Default;
+			field[index] = MatType::Default;
+		}
+
+		void clear(Index_t index) {
+			field[index] = MatType::Default;
 		}
 
 		//Getters
 		int getSize(void) { return nSize; };
 		int getWidth(void) { return nWidth; };
 
-		materie::MatType at(int width, int height) {
+		MatType at(int width, int height) {
 			int index = CalcIndex(width, height);
 			return field[index];
 		}
 
-		materie::MatType at(int index) {
+		MatType at(int index) {
 			return field[index];
 		}
 
@@ -77,7 +86,12 @@ namespace simulate {
 		bool move(int index, MoveDirs dir);
 		bool move(int index, MoveDirs dir, int stepLength);
 
+	private:
+		Index_t getDirIndex(Index_t index, int* motion);
+		int* getMotionVector(MoveDirs dir);
 
 	}; //class Domain
+
+
 
 }//namespace simulate
