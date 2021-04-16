@@ -7,14 +7,14 @@ namespace simulate {
 
 		fillActiveMaterialsList();
 
-		for (int n = 0; n < activeMaterialsList.size(); n++) {
+		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {
 
 		}
 
 	}
 
 	bool Simulator::cellIsActive(int n) {
-		materie::MatType type = domain.at(n);
+		MatType type = domain.at(n);
 		materie::Material* material = matFact.GetMaterial(type);
 		return material->isDynamic();
 	}
@@ -41,7 +41,7 @@ namespace simulate {
 	}
 
 	unsigned int Simulator::getCellColor(int i, int j) {
-		materie::MatType type = domain.at(i,j);
+		MatType type = domain.at(i,j);
 		materie::Material* material = matFact.GetMaterial(type);
 		return material->getColor();
 	}
@@ -49,10 +49,10 @@ namespace simulate {
 
 	//Actor functions (act on the simulation
 	void Simulator::setCenterSand(void) {
-		int i = floor(nWidth * 0.50);
-		int j = floor(nHeight * 0.60);
+		int i = (int)floor(nWidth * 0.50);
+		int j = (int)floor(nHeight * 0.66);
 
-		domain.set(i, j, materie::MatType::Sand);
+		domain.set(i, j, MatType::Sand);
 	}
 
 }  ///namspace simulate

@@ -1,4 +1,5 @@
 #pragma once
+#include "Structs.h"
 
 typedef unsigned int Index_t;
 
