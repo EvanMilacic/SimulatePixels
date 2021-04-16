@@ -1,4 +1,5 @@
 #pragma once
+#include "Globals.h"
 #include "Domain.h"
 #include "Material.h"
 
@@ -23,7 +24,16 @@ public:
 
 	void UpdateState(void) {};
 	void UpdatePosition(int index, simulate::Domain* domain) {
-		int i = index
+		Index_t i = index;
+		if (domain->move(i, MoveDirs::Down)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::LeftD)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::RightD)) {
+			return;
+		}
 
 	};
 
