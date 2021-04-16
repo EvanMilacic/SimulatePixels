@@ -46,4 +46,13 @@ namespace simulate {
 		return material->getColor();
 	}
 
+
+	//Actor functions (act on the simulation
+	void Simulator::setCenterSand(void) {
+		int i = floor(nWidth * 0.50);
+		int j = floor(nHeight * 0.60);
+
+		domain.set(i, j, materie::MatType::Sand);
+	}
+
 }  ///namspace simulate
