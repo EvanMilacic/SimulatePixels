@@ -64,7 +64,7 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 	
 
 	// Create Window
-	HWND window = CreateWindow(window_class.lpszClassName, "My First Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, 0, 0, hInstance, 0);
+	HWND window = CreateWindow(window_class.lpszClassName, "My First Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, 500, 250, 0, 0, hInstance, 0);
 	HDC hdc = GetDC(window);
 
 
@@ -81,8 +81,10 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 			DispatchMessage(&message);
 		}
 		// Simulate
-		//renderer.RenderBackground(renderState);
+		simulator.setCenterSand();
+
 		renderer.UpdateScreen(renderState,&simulator);
+		
 		simulator.SimulateDomain();
 
 		// Render Game

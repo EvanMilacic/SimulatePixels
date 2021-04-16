@@ -1,6 +1,7 @@
 #pragma once
+#include "Globals.h"
 #include "Enums.h"
-
+#include "Domain.h"
 
 namespace materie {
 
@@ -35,7 +36,7 @@ namespace materie {
 		~Material() {};
 
 		virtual void UpdateState(void) {};
-		virtual void UpdatePosition(void) {};
+		virtual void UpdatePosition(int index, simulate::Domain* domain) {};
 		
 		//Getters
 		MatType isType(void) { return type; };

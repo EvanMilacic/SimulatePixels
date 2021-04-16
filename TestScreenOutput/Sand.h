@@ -1,6 +1,4 @@
 #pragma once
-#include "Globals.h"
-#include "Domain.h"
 #include "Material.h"
 
 namespace materie{

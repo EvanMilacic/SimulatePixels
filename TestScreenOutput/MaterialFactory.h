@@ -9,6 +9,7 @@
 #include "Steam.h"
 #include "Water.h"
 #include "Wood.h"
+#include "Default.h"
 
 namespace materie {
 
@@ -46,8 +47,11 @@ namespace materie {
 			case MatType::Blood: {
 				return new Blood();
 			}
+			case MatType::Default: {
+				return new Default();
+			}
 			default: {
-				return new Material();
+				return new Default();
 			};
 			}
 		};
