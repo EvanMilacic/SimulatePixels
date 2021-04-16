@@ -1,8 +1,8 @@
 #pragma once
+#include "Enums.h"
+
 
 namespace materie {
-
-	enum class MatType { Default, Sand, Water, Salt, Fire, Wood, Smoke, Steam, Blood };
 
 	class Material
 	{
