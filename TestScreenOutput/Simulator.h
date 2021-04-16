@@ -23,12 +23,11 @@ private:
 	void fillActiveMaterialsList(void);
 
 public:
-	Simulator() {};
-	Simulator(RenderState renderState){
+	Simulator(RenderState renderState) : domain(10,10){
 		setSize(renderState);
 	}
-	Simulator(int width, int height) {
-		domain.setSize(width, height);
+	Simulator(int width, int height): domain(10,10) {
+		setSize(width, height);
 	};
 	~Simulator() {};
 
@@ -60,8 +59,6 @@ public:
 
 	//Actors
 	void setCenterSand(void);
-
-
 };
 
 } // namespace simulate
