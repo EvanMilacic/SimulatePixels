@@ -4,7 +4,7 @@ namespace simulate {
 
 	bool Domain::move(int index, MoveDirs dir) {
 		//Get Motion vector
-		int* motion = getMotionVector(dir);
+		Index2 motion = getMotionVector(dir);
 		//Calculate the target cell
 		Index_t targetIndex = getDirIndex(index, motion);
 		//If cell is not occupied, move there
@@ -26,11 +26,11 @@ namespace simulate {
 		Index_t workingIndex, targetIndex;
 		workingIndex = index;
 		//Get motion vector
-		int* motion = getMotionVector(dir);
+		Index2 motion = getMotionVector(dir);
 
 		//Loop over the length of the vector
 		//If an obstructed cell is found, the cell will only be moved until that cell
-		for (Index_t n = 0; n < stepLength; n++) {
+		for (int n = 0; n < stepLength; n++) {
 			//Get target cell id
 			targetIndex = getDirIndex(workingIndex, motion);
 			//Check if it is empty
@@ -54,14 +54,14 @@ namespace simulate {
 		return true;
 	}
 
-	Index_t Domain::getDirIndex(Index_t index, int* motion) {
+	Index_t Domain::getDirIndex(Index_t index, Index2 motion) {
 
 		Index2 currentInd = CalcIndex2(index);
 		Index2 newInd;
 
 		//Move index along the motion vector
-		newInd.i = currentInd.i + motion[0];
-		newInd.j = currentInd.j + motion[1];
+		newInd.i = currentInd.i + motion.i;
+		newInd.j = currentInd.j + motion.j;
 
 		//Avoid going out of the domain size
 		newInd.i = math::clamp(0, newInd.i, nWidth-1);
@@ -72,35 +72,35 @@ namespace simulate {
 
 	}
 
-	int* Domain::getMotionVector(MoveDirs dir) {
+	Index2 Domain::getMotionVector(MoveDirs dir) {
 		// produces the correct motion vector in the grid
 		switch (dir) {
 		case MoveDirs::Down: {
-			int motion[2] = { 0,1 };
+			Index2 motion = { 0,1 };
 			return motion; }
 		case MoveDirs::Up: {
-			int motion[2] = { 0,-1 };
+			Index2 motion = { 0,-1 };
 			return motion; }
 		case MoveDirs::Left: {
-			int motion[2] = {-1,0 };
+			Index2 motion = {-1,0 };
 			return motion; }
 		case MoveDirs::Right: {
-			int motion[2] = {1,0};
+			Index2 motion = {1,0};
 			return motion; }
 		case MoveDirs::LeftD: {
-			int motion[2] = { -1,1 };
+			Index2 motion = { -1,1 };
 			return motion; }
 		case MoveDirs::LeftU: {
-			int motion[2] = { -1,-1};
+			Index2 motion = { -1,-1};
 			return motion; }
 		case MoveDirs::RightD: {
-			int motion[2] = { 1,1 };
+			Index2 motion = { 1,1 };
 			return motion; }
 		case MoveDirs::RightU: {
-			int motion[2] = { 1,-1 };
+			Index2 motion = { 1,-1 };
 			return motion; }
 		default: {
-			int motion[2] = { 0,0 };
+			Index2 motion = { 0,0 };
 			return motion; }
 		}
 

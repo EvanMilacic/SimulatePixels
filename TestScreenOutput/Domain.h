@@ -26,7 +26,7 @@ namespace simulate {
 		}
 
 		Index2 CalcIndex2(int index) {
-			Index2 indices{ index - floor(index / nWidth) * nWidth, floor(index / nWidth) };
+			Index2 indices{ (int)(index - floor(index / nWidth) * nWidth), (int)floor(index / nWidth) };
 			return indices;
 		}
 
@@ -87,8 +87,8 @@ namespace simulate {
 		bool move(int index, MoveDirs dir, int stepLength);
 
 	private:
-		Index_t getDirIndex(Index_t index, int* motion);
-		int* getMotionVector(MoveDirs dir);
+		Index_t getDirIndex(Index_t index, Index2 motion);
+		Index2 getMotionVector(MoveDirs dir);
 
 	}; //class Domain
 
