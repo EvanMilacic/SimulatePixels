@@ -26,7 +26,7 @@ LRESULT CALLBACK window_callback(HWND hwnd, UINT uMsg,
 		renderState.width = rect.right - rect.left;
 		renderState.height = rect.bottom - rect.top;
 
-		int buffer_size = renderState.width * renderState.height * sizeof(u32);
+		int buffer_size = renderState.width * renderState.height * sizeof(unsigned int);
 
 		if (renderState.memory) VirtualFree(renderState.memory, 0, MEM_RELEASE);
 		renderState.memory = VirtualAlloc(0, buffer_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
@@ -82,7 +82,7 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 		}
 		// Simulate
 		//renderer.RenderBackground(renderState);
-		renderer.UpdateScreen(renderState);
+		renderer.UpdateScreen(renderState,&simulator);
 		simulator.SimulateDomain();
 
 		// Render Game

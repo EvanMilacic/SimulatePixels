@@ -1,6 +1,4 @@
 #pragma once
-#include "Domain.h"
-#include "Simulator.h"
 
 namespace materie {
 
@@ -11,6 +9,7 @@ namespace materie {
 	protected:
 		MatType type;
 		unsigned int color;
+
 		bool dynamic;
 		bool combustible;
 		bool soluble;
@@ -23,10 +22,12 @@ namespace materie {
 		Material() {
 			type = MatType::Default;
 			color = 0x000000;
+
 			dynamic = false;
 			combustible = false;
 			soluble = false;
 			hurts = false;
+
 			density = 1.0f;
 			damage = 0.0f;
 		}

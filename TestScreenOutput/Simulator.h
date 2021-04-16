@@ -41,7 +41,7 @@ public:
 	int getNumHeight() { return nHeight; };
 	int getNumSize() { return nWidth * nHeight; };
 
-	materie::MatType getCellMaterial(int i, int j) { return domain.at(i,j); };
+	materie::MatType getCellMaterial(int i, int j) { return domain.at(i, j); };
 	unsigned int getCellColor(int i, int j);
 
 	Domain* giveGuts(void) {
@@ -57,6 +57,10 @@ public:
 		nHeight = height;
 		domain.setSize(width, height);
 	};
+
+	//Actors
+	void setCenterSand(void);
+
 
 };
 
