@@ -20,10 +20,29 @@ namespace materie {
 		~Steam() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {};
+		void UpdatePosition(int index, simulate::Domain* domain) {
+			Index_t i = index;
+			if (domain->move(i, MoveDirs::Up)) {
+				return;
+			}
+			else if (domain->move(i, MoveDirs::LeftU)) {
+				return;
+			}
+			else if (domain->move(i, MoveDirs::RightU)) {
+				return;
+			}
+			else if (domain->move(i, MoveDirs::Left)) {
+				return;
+			}
+			else if (domain->move(i, MoveDirs::Right)) {
+				return;
+			}
+		};
 
 	private:
+		bool directionFlipper = true;
 
+		
 
 	};
 

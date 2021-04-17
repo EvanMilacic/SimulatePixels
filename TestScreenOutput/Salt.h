@@ -1,8 +1,8 @@
 #pragma once
-#include "Material.h"
+#include "Sand.h"
 namespace materie {
 
-	class Salt : public materie::Material {
+	class Salt : public materie::Sand {
 
 	public:
 
@@ -20,7 +20,6 @@ namespace materie {
 		~Salt() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {};
 
 	private:
 

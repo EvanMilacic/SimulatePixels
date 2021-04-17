@@ -1,8 +1,8 @@
 #pragma once
-#include "Material.h"
+#include "Steam.h"
 namespace materie {
 
-	class Smoke : public materie::Material {
+	class Smoke : public materie::Steam {
 
 	public:
 
@@ -20,7 +20,6 @@ namespace materie {
 		~Smoke() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {};
 
 	private:
 

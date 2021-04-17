@@ -1,14 +1,15 @@
 #pragma once
-#include "Material.h"
+#include "Water.h"
+
 namespace materie {
 
-	class Blood : public materie::Material {
+	class Blood : public materie::Water {
 
 	public:
 
 		Blood() {
 			type = MatType::Blood;
-			color = 0x8596a4;
+			color = 0xc40808;
 			dynamic = true;
 			combustible = false;
 			soluble = true;
@@ -20,7 +21,6 @@ namespace materie {
 		~Blood() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {};
 
 	private:
 

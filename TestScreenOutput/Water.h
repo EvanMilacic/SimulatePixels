@@ -20,7 +20,24 @@ public:
     ~Water() {};
 
 	void UpdateState(void) {};
-	void UpdatePosition(int index, simulate::Domain* domain) {};
+	void UpdatePosition(int index, simulate::Domain* domain) {
+		Index_t i = index;
+		if (domain->move(i, MoveDirs::Down)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::LeftD)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::RightD)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::Left)) {
+			return;
+		}
+		else if (domain->move(i, MoveDirs::Right)) {
+			return;
+		}
+	};
 };
 
 } // namespace materie
