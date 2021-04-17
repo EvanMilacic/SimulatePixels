@@ -14,7 +14,7 @@ namespace simulate {
 			type = domain.at(index);
 			material = matFact.getMaterial(type);
 			material->UpdatePosition(index, giveGuts());
-			delete(material);
+			//delete(material);
 		}
 
 		
@@ -28,7 +28,7 @@ namespace simulate {
 			MatType type = domain.at(n);
 			materie::Material* material = matFact.getMaterial(type);
 			bool isDynamic = material->isDynamic();
-			delete(material);
+			//delete(material);
 			return isDynamic;
 		}
 	}
@@ -60,7 +60,7 @@ namespace simulate {
 		MatType type = domain.at(i,j);
 		materie::Material* material = matFact.getMaterial(type);
 		unsigned int color = material->getColor();
-		delete(material);
+		//delete(material);
 		return color;
 	}
 
