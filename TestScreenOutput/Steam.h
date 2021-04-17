@@ -17,10 +17,10 @@ namespace materie {
 			damage = 5.0f;
 		};
 
-		~Steam();
+		~Steam() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(void) {};
+		void UpdatePosition(int index, simulate::Domain* domain) {};
 
 	private:
 

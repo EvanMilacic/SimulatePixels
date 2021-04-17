@@ -20,7 +20,7 @@ public:
     ~Water() {};
 
 	void UpdateState(void) {};
-	void UpdatePosition(void) {};
+	void UpdatePosition(int index, simulate::Domain* domain) {};
 };
 
 } // namespace materie
