@@ -68,41 +68,6 @@ namespace materie {
 			}
 		}
 
-		Material* GetMaterial(MatType type) {
-			switch (type) {
-			case MatType::Sand: {
-				return new Sand();
-			}
-			case MatType::Water: {
-				return new Water();
-			}
-			case MatType::Salt: {
-				return new Salt();
-			}
-			case MatType::Fire: {
-				return new Fire();
-			}
-			case MatType::Wood: {
-				return new Wood();
-			}
-			case MatType::Smoke: {
-				return new Smoke();
-			}
-			case MatType::Steam: {
-				return new Steam();
-			}
-			case MatType::Blood: {
-				return new Blood();
-			}
-			case MatType::Default: {
-				return new Default();
-			}
-			default: {
-				return new Default();
-			};
-			}
-		};
-
 	};
 
 } // namespace materie
