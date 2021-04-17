@@ -12,7 +12,7 @@ namespace simulate {
 			materie::Material* material;
 			Index_t index = activeMaterialsList[n];
 			type = domain.at(index);
-			material = matFact.GetMaterial(type);
+			material = matFact.getMaterial(type);
 			material->UpdatePosition(index, giveGuts());
 			delete(material);
 		}
@@ -26,7 +26,7 @@ namespace simulate {
 		}
 		else {
 			MatType type = domain.at(n);
-			materie::Material* material = matFact.GetMaterial(type);
+			materie::Material* material = matFact.getMaterial(type);
 			bool isDynamic = material->isDynamic();
 			delete(material);
 			return isDynamic;
@@ -58,7 +58,7 @@ namespace simulate {
 
 	unsigned int Simulator::getCellColor(int i, int j) {
 		MatType type = domain.at(i,j);
-		materie::Material* material = matFact.GetMaterial(type);
+		materie::Material* material = matFact.getMaterial(type);
 		unsigned int color = material->getColor();
 		delete(material);
 		return color;
