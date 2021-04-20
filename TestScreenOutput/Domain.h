@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 
+
 #include "Globals.h"
-#include "Structs.h"
 #include "Enums.h"
 #include "MyMath.h"
 

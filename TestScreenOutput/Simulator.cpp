@@ -1,5 +1,4 @@
 #include "Simulator.h"
-#include "Material.h"
 
 namespace simulate {
 

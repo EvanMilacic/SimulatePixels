@@ -3,7 +3,6 @@
 
 #include "Structs.h"
 #include "Domain.h"
-#include "Material.h"
 #include "MaterialFactory.h"
 
 namespace simulate {
