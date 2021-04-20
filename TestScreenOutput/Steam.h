@@ -25,13 +25,16 @@ namespace materie {
 			if (domain->move(i, MoveDirs::Up)) {
 				return;
 			}
-			else if (domain->move(i, MoveDirs::LeftU)) {
+
+			if (flipDirection() && domain->move(i, MoveDirs::LeftU)) {
+				
 				return;
 			}
 			else if (domain->move(i, MoveDirs::RightU)) {
 				return;
 			}
-			else if (domain->move(i, MoveDirs::Left)) {
+			
+			if (flipDirection() && domain->move(i, MoveDirs::Left)) {
 				return;
 			}
 			else if (domain->move(i, MoveDirs::Right)) {
@@ -40,9 +43,6 @@ namespace materie {
 		};
 
 	private:
-		bool directionFlipper = true;
-
-		
 
 	};
 

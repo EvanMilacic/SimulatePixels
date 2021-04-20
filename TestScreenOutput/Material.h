@@ -19,6 +19,13 @@ namespace materie {
 		float density;
 		float damage;
 
+		bool direction = true; // defines left as first direction on true
+
+		bool flipDirection(void) {
+			direction = !direction;
+			return direction;
+		}
+
 	public:
 		Material() {
 			type = MatType::Default;

@@ -25,13 +25,15 @@ public:
 		if (domain->move(i, MoveDirs::Down)) {
 			return;
 		}
-		else if (domain->move(i, MoveDirs::LeftD)) {
+		
+		if (flipDirection() && domain->move(i, MoveDirs::LeftD)) {
 			return;
 		}
 		else if (domain->move(i, MoveDirs::RightD)) {
 			return;
 		}
-		else if (domain->move(i, MoveDirs::Left)) {
+
+		if (flipDirection() && domain->move(i, MoveDirs::Left)) {
 			return;
 		}
 		else if (domain->move(i, MoveDirs::Right)) {
