@@ -4,18 +4,22 @@ namespace simulate {
 
 	void Simulator::SimulateDomain(void) {
 
-		fillActiveMaterialsList();
+		moveActiveCells();
 
-		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {
-			MatType type;
-			materie::Material* material;
-			Index_t index = activeMaterialsList[n];
-			type = domain.at(index);
-			material = matFact.getMaterial(type);
-			material->UpdatePosition(index, giveGuts());
+		applyPhysics();
+	}
+
+
+	void Simulator::fillActiveMaterialsList(void) {
+
+		activeMaterialsList.clear();
+
+		int nActiveCells = 0;
+		for (int n = 0; n < domain.getSize(); n++) {
+			if (cellIsActive(n)) {
+				activeMaterialsList.push_back(n);
+			}
 		}
-
-
 	}
 
 	bool Simulator::cellIsActive(int n) {
@@ -30,16 +34,47 @@ namespace simulate {
 		}
 	}
 
+	void Simulator::moveActiveCells(void) {
 
-	void Simulator::fillActiveMaterialsList(void) {
+		fillActiveMaterialsList();
 
-		activeMaterialsList.clear();
+		MatType type;
+		materie::Material* material;
+		Index_t index;
+		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {		
+			index = activeMaterialsList[n];
+			type = domain.at(index);
+			material = matFact.getMaterial(type);
+			material->UpdatePosition(index, giveGuts());
+		}
+	}
 
-		int nActiveCells = 0;
-		for (int n = 0; n < domain.getSize(); n++) {
-			if (cellIsActive(n)) {
-				activeMaterialsList.push_back(n);
-			}
+	void Simulator::applyPhysics(void) {
+
+		fillActiveMaterialsList();
+
+		Index_t index;
+		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {
+			index = activeMaterialsList[n];
+			applyDensity(index);
+		}
+	}
+
+	void Simulator::applyDensity(Index_t index) {
+
+		materie::Material* myMaterial;
+		materie::Material* upNeighbour;
+
+		myMaterial = matFact.getMaterial(domain.at(index));
+		upNeighbour = matFact.getMaterial(domain.at(index,MoveDirs::Up));
+		float dens_1 = myMaterial->getDensity();
+		float dens_2 = upNeighbour->getDensity();
+		if (dens_1 != dens_2) {
+			float diff = dens_1 - dens_2;
+		}
+
+		if (dens_1 < dens_2 ) {
+			domain.flip(index, MoveDirs::Up);
 		}
 	}
 

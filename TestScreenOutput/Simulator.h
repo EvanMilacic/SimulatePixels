@@ -3,6 +3,7 @@
 
 #include "Structs.h"
 #include "Domain.h"
+#include "Enums.h"
 #include "MaterialFactory.h"
 
 namespace simulate {
@@ -20,7 +21,9 @@ private:
 
 	bool cellIsActive(int n);
 	void fillActiveMaterialsList(void);
-
+	void moveActiveCells(void);
+	void applyPhysics(void);
+	void applyDensity(Index_t index);
 public:
 	Simulator(RenderState renderState) : domain(10,10){
 		setSize(renderState);
