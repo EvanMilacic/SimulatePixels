@@ -52,8 +52,8 @@ namespace materie {
 		bool isSoluble(void) { return soluble; };
 		bool isHurts(void) { return hurts; };
 		unsigned int getColor(void) { return color; };
-		bool getDensity(void) { return density; };
-		bool getDamage(void) { return damage; };
+		float  getDensity(void) { return density; };
+		float getDamage(void) { return damage; };
 	};
 
 
