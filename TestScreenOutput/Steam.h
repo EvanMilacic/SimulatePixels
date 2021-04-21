@@ -27,7 +27,6 @@ namespace materie {
 			}
 
 			if (flipDirection() && domain->move(i, MoveDirs::LeftU)) {
-				
 				return;
 			}
 			else if (domain->move(i, MoveDirs::RightU)) {

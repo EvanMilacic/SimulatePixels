@@ -10,5 +10,28 @@ struct RenderState {
 struct Index2 {
 	int i;
 	int j;
-	int data[2]{ i,j };
+
+	Index2(int _i = 0, int _j = 0) : i(_i), j(_j) {};
+
+	Index2 operator+(const Index2 other) const{
+		Index2 result(i, j);
+		result.i += other.i;
+		result.j += other.j;
+		return result;
+	}
+
+	Index2 operator+=(const Index2 other) const{
+		Index2 result(i, j);
+		result.i += other.i;
+		result.j += other.j;
+		return result;
+	}
+
+	Index2 operator-(const Index2 other) const {
+		Index2 result(i, j);
+		result.i -= other.i;
+		result.j -= other.j;
+		return result;
+	}
+
 };
