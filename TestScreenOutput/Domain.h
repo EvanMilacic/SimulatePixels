@@ -29,6 +29,13 @@ namespace simulate {
 			return indices;
 		}
 
+		Index2 CalcIndex2(int index, MoveDirs direction) {
+			Index2 ind = CalcIndex2(index);
+			Index2 dir = getMotionVector(direction);
+			ind += dir;
+			return ind;
+		}
+
 		bool isDefault(Index_t index) {
 			return (field[index] == MatType::Default);
 		}
@@ -71,6 +78,10 @@ namespace simulate {
 
 		bool isOnEdge(Index_t index);
 
+		MatType at(Index2 ind) {
+			return at(ind.i, ind.j);
+		}
+
 		MatType at(int width, int height) {
 			int index = CalcIndex(width, height);
 			return field[index];
@@ -80,10 +91,30 @@ namespace simulate {
 			return field[index];
 		}
 
+		MatType at(int index, MoveDirs direction) {
+			Index2 ind_dir = CalcIndex2(index,direction);
+			return at(ind_dir);
+		}
 
 		//move operations
 		bool move(int index, MoveDirs dir);
 		bool move(int index, MoveDirs dir, int stepLength);
+
+		void flip(int index_1, int index_2) {
+			MatType temp = field[index_1];
+			field[index_1] = field[index_2];
+			field[index_2] = temp;
+		}
+		void flip(Index2 ind_1, Index2 ind_2) {
+			int index_1 = CalcIndex(ind_1);
+			int index_2 = CalcIndex(ind_2);
+			flip(index_1, index_2);
+		}
+		void flip(int index, MoveDirs direction) {
+			Index2 ind = CalcIndex2(index);
+			Index2 ind_dir = CalcIndex2(index, direction);
+			flip(ind, ind_dir);
+		}
 
 	private:
 		Index_t getDirIndex(Index_t index, Index2 motion);
