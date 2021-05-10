@@ -1,7 +1,11 @@
 #include "Domain.h"
 
 namespace simulate {
-
+	bool Domain::move(Index2 ind, MoveDirs dir)
+	{
+		int index = CalcIndex(ind);
+		return move(index, dir);
+	}
 	bool Domain::move(int index, MoveDirs dir) {
 		//Get Motion vector
 		Index2 motion = getMotionVector(dir);
@@ -9,13 +13,10 @@ namespace simulate {
 		Index_t targetIndex = getDirIndex(index, motion);
 		//If cell is not occupied, move there
 		if (isDefault(targetIndex)) {
-			MatType temp = field[index];
-			field[index] = MatType::Default;
-			field[targetIndex] = temp;
+			flip(index, targetIndex);
 			return true;
 		}
 		else {
-			//If occupied, return false
 			return false;
 		}
 
@@ -109,15 +110,18 @@ namespace simulate {
 
 	bool Domain::isOnEdge(Index_t index) {
 		Index2 ind = CalcIndex2(index);
-		if (ind.i == 0 || ind.i == nWidth) {
+		return isOnEdge(ind);
+	}
+
+	bool Domain::isOnEdge(Index2 ind){
+		if (ind.i == 0 || ind.i == nWidth-1) {
 			return true;
 		}
-		if (ind.j == 0 || ind.j == nHeight) {
+		if (ind.j == 0 || ind.j == nHeight-1) {
 			return true;
 		}
 
 		return false;
 	}
-
 
 }

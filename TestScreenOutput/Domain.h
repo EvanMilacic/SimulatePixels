@@ -50,13 +50,16 @@ namespace simulate {
 		void setSize(int width, int height) {
 			nWidth = width;
 			nHeight = height;
-			nSize = nWidth * nHeight;
-			field.resize(nSize);
+			field.resize(nWidth * nHeight);
 		}
 
 		void set(int width, int height, MatType type) {
 			int index = CalcIndex(width, height);
 			field[index] = type;
+		}
+
+		void set(Index2 ind, MatType type) {
+			set(ind.i, ind.j, type);
 		}
 
 		void set(int index, MatType type) {
@@ -73,10 +76,12 @@ namespace simulate {
 		}
 
 		//Getters
-		int getSize(void) { return nSize; };
+		int getSize(void) { return field.size(); };
 		int getWidth(void) { return nWidth; };
+		int getHeight(void) { return nHeight; };
 
 		bool isOnEdge(Index_t index);
+		bool isOnEdge(Index2 ind);
 
 		MatType at(Index2 ind) {
 			return at(ind.i, ind.j);
@@ -84,11 +89,16 @@ namespace simulate {
 
 		MatType at(int width, int height) {
 			int index = CalcIndex(width, height);
-			return field[index];
+			return at(index);
 		}
 
 		MatType at(int index) {
-			return field[index];
+				return field[index];
+		}
+
+		MatType at(Index2 ind, MoveDirs direction) {
+			int index = CalcIndex(ind);
+			return at(index, direction);
 		}
 
 		MatType at(int index, MoveDirs direction) {
@@ -97,6 +107,7 @@ namespace simulate {
 		}
 
 		//move operations
+		bool move(Index2 ind, MoveDirs dir);
 		bool move(int index, MoveDirs dir);
 		bool move(int index, MoveDirs dir, int stepLength);
 
@@ -116,7 +127,13 @@ namespace simulate {
 			flip(ind, ind_dir);
 		}
 
-	private:
+		Index_t getProjectionIndex(Index_t index, MoveDirs direction) {
+			Index2 motion = getMotionVector(direction);
+			Index_t targetIndex = getDirIndex(index, motion);
+			return targetIndex;
+		}
+
+		private:
 		Index_t getDirIndex(Index_t index, Index2 motion);
 		Index2 getMotionVector(MoveDirs dir);
 
