@@ -12,7 +12,7 @@ class Simulator
 private:
 	int nWidth;
 	int nHeight;
-
+	bool withEdge = false;
 	std::vector<int> activeMaterialsList;
 
 	Domain domain;
@@ -24,6 +24,7 @@ private:
 	void moveActiveCells(void);
 	void applyPhysics(void);
 	void applyDensity(Index_t index);
+	bool evaluateDensity(Index_t index1, Index_t index2);
 public:
 	Simulator(RenderState renderState) : domain(10,10){
 		setSize(renderState);

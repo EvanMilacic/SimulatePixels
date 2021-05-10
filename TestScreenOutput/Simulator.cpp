@@ -23,7 +23,7 @@ namespace simulate {
 	}
 
 	bool Simulator::cellIsActive(int n) {
-		if (domain.isOnEdge(n)) {
+		if (domain.isOnEdge(n) && !withEdge) {
 			return false;
 		}
 		else {
@@ -35,7 +35,7 @@ namespace simulate {
 	}
 
 	void Simulator::moveActiveCells(void) {
-
+		withEdge = false;
 		fillActiveMaterialsList();
 
 		MatType type;
@@ -50,7 +50,7 @@ namespace simulate {
 	}
 
 	void Simulator::applyPhysics(void) {
-
+		withEdge = true;
 		fillActiveMaterialsList();
 
 		Index_t index;
@@ -62,20 +62,39 @@ namespace simulate {
 
 	void Simulator::applyDensity(Index_t index) {
 
+		Index_t indexUp;
+		indexUp = domain.getProjectionIndex(index, MoveDirs::Up);
+		if (indexUp < domain.getSize() && evaluateDensity(index, indexUp) ) {
+			return;
+		}
+
+		Index_t indexLeftUp;
+		indexLeftUp = domain.getProjectionIndex(index, MoveDirs::LeftU);
+		if (indexLeftUp < domain.getSize() && evaluateDensity(index, indexLeftUp)) {
+			return;
+		}
+
+		Index_t indexRightUp;
+		indexRightUp = domain.getProjectionIndex(index, MoveDirs::RightU);
+		if (indexRightUp < domain.getSize() && evaluateDensity(index, indexRightUp)) {
+			return;
+		}
+	}
+
+	bool Simulator::evaluateDensity(Index_t index1, Index_t index2) {
 		materie::Material* myMaterial;
 		materie::Material* upNeighbour;
 
-		myMaterial = matFact.getMaterial(domain.at(index));
-		upNeighbour = matFact.getMaterial(domain.at(index,MoveDirs::Up));
+		myMaterial = matFact.getMaterial(domain.at(index1));
+		upNeighbour = matFact.getMaterial(domain.at(index2));
 		float dens_1 = myMaterial->getDensity();
 		float dens_2 = upNeighbour->getDensity();
-		if (dens_1 != dens_2) {
-			float diff = dens_1 - dens_2;
-		}
 
-		if (dens_1 < dens_2 ) {
-			domain.flip(index, MoveDirs::Up);
+		if (dens_1 < dens_2) {
+			domain.flip(index1, index2);
+			return true;
 		}
+		return false;
 	}
 
 	unsigned int Simulator::getCellColor(int i, int j) {
