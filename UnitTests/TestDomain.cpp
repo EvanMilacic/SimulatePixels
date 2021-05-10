@@ -42,12 +42,32 @@ public:
 		Assert::AreEqual(MatType::Sand, testDomain.at(15));
 	}
 
-	TEST_METHOD(OnEdgeTest) {
+	TEST_METHOD(Clear) {
 		simulate::Domain testDomain(5, 5);
+		testDomain.set(24, MatType::Blood);
+		testDomain.clear(24);
+		Assert::AreEqual(testDomain.at(24), MatType::Default);
+	}
+	TEST_METHOD(CalcIndexTesting) {
+		
+		//Test conversion to 1D
+		simulate::Domain test1D(4, 6);
+		test1D.set(3,5, MatType::Sand);
+		Assert::AreEqual(test1D.at(23),MatType::Sand);
+
+		//Test conversion to 2D
+		simulate::Domain test2D(4, 6);
+		test2D.set(23, MatType::Sand);
+		Assert::AreEqual(test2D.at(23), MatType::Sand);
+	}
+
+	TEST_METHOD(OnEdgeTest) {
+		simulate::Domain testDomain(4, 6);
+		Assert::IsTrue(testDomain.isOnEdge(0));
 		Assert::IsTrue(testDomain.isOnEdge(4));
-		Assert::IsTrue(testDomain.isOnEdge(5));
-		Assert::IsTrue(testDomain.isOnEdge(24));
-		Assert::IsFalse(testDomain.isOnEdge(15));
+		Assert::IsTrue(testDomain.isOnEdge(8));
+		Assert::IsTrue(testDomain.isOnEdge(23));
+		Assert::IsFalse(testDomain.isOnEdge(5));
 	}
 
 	TEST_METHOD(Move) {
@@ -56,6 +76,25 @@ public:
 		testDomain.set(start, MatType::Sand);
 		bool testBool = testDomain.move(start, MoveDirs::Up);
 		Assert::AreEqual(MatType::Sand, testDomain.at(start,MoveDirs::Up));
+	}
+
+	TEST_METHOD(Flip) {
+		simulate::Domain testDomain(4, 6);
+		Index2 ind1{ 3,5 };
+		Index2 ind2{ 0,0 };
+		testDomain.set(ind1, MatType::Blood);
+		testDomain.set(ind2, MatType::Smoke);
+		testDomain.flip(ind1,ind2);
+		Assert::AreEqual(testDomain.at(ind1), MatType::Smoke);
+		Assert::AreEqual(testDomain.at(ind2), MatType::Blood);
+	}
+
+	TEST_METHOD(GetDirectionIndex) {
+
+	}
+
+	TEST_METHOD(GetMotionVector) {
+
 	}
 
 	};
