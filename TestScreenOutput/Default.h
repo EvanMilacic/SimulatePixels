@@ -13,7 +13,7 @@ namespace materie {
 			combustible = false;
 			soluble = false;
 			hurts = false;
-			density = 0.0f;
+			density = -10000.0;
 			damage = 0.0f;
 		};
 
