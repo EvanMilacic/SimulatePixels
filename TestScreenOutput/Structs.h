@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "Enums.h"
 
 struct RenderState {
 	int height, width;
@@ -45,3 +46,38 @@ struct Index2 {
 
 };
 
+struct LUT_MotionVector {
+
+	Index2 get(MoveDirs direction) {
+		switch (direction) {
+		case MoveDirs::Down: {
+			Index2 motion = { 0,-1 };
+			return motion; }
+		case MoveDirs::Up: {
+			Index2 motion = { 0,1 };
+			return motion; }
+		case MoveDirs::Left: {
+			Index2 motion = { -1,0 };
+			return motion; }
+		case MoveDirs::Right: {
+			Index2 motion = { 1,0 };
+			return motion; }
+		case MoveDirs::LeftD: {
+			Index2 motion = { -1,-1 };
+			return motion; }
+		case MoveDirs::LeftU: {
+			Index2 motion = { -1,1 };
+			return motion; }
+		case MoveDirs::RightD: {
+			Index2 motion = { 1,-1 };
+			return motion; }
+		case MoveDirs::RightU: {
+			Index2 motion = { 1,1 };
+			return motion; }
+		default: {
+			Index2 motion = { 0,0 };
+			return motion; }
+		}
+	}
+
+};

@@ -15,6 +15,7 @@ namespace simulate {
 		int nHeight;
 		int nSize;
 		std::vector<MatType> field;
+		LUT_MotionVector LUT_MV;
 
 		int CalcIndex(int i, int j) {
 			return nWidth * j + i;
@@ -31,7 +32,7 @@ namespace simulate {
 
 		Index2 CalcIndex2(int index, MoveDirs direction) {
 			Index2 ind = CalcIndex2(index);
-			Index2 dir = getMotionVector(direction);
+			Index2 dir = LUT_MV.get(direction);
 			ind += dir;
 			return ind;
 		}
@@ -128,14 +129,13 @@ namespace simulate {
 		}
 
 		Index_t getProjectionIndex(Index_t index, MoveDirs direction) {
-			Index2 motion = getMotionVector(direction);
+			Index2 motion = LUT_MV.get(direction);
 			Index_t targetIndex = getDirIndex(index, motion);
 			return targetIndex;
 		}
 
 		private:
 		Index_t getDirIndex(Index_t index, Index2 motion);
-		Index2 getMotionVector(MoveDirs dir);
 
 	}; //class Domain
 

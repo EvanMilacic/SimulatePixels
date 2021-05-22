@@ -8,7 +8,7 @@ namespace simulate {
 	}
 	bool Domain::move(int index, MoveDirs dir) {
 		//Get Motion vector
-		Index2 motion = getMotionVector(dir);
+		Index2 motion = LUT_MV.get(dir);
 		//Calculate the target cell
 		Index_t targetIndex = getDirIndex(index, motion);
 		//If cell is not occupied, move there
@@ -28,7 +28,7 @@ namespace simulate {
 		workingIndex = index;
 		targetIndex = index;
 		//Get motion vector
-		Index2 motion = getMotionVector(dir);
+		Index2 motion = LUT_MV.get(dir);
 
 		//Loop over the length of the vector
 		//If an obstructed cell is found, the cell will only be moved until that cell
@@ -71,40 +71,6 @@ namespace simulate {
 
 		//Convert 2D inex to 1D
 		return CalcIndex(newInd);
-
-	}
-
-	Index2 Domain::getMotionVector(MoveDirs dir) {
-		// produces the correct motion vector in the grid
-		switch (dir) {
-		case MoveDirs::Down: {
-			Index2 motion = { 0,-1 };
-			return motion; }
-		case MoveDirs::Up: {
-			Index2 motion = { 0,1 };
-			return motion; }
-		case MoveDirs::Left: {
-			Index2 motion = {-1,0 };
-			return motion; }
-		case MoveDirs::Right: {
-			Index2 motion = {1,0};
-			return motion; }
-		case MoveDirs::LeftD: {
-			Index2 motion = { -1,-1 };
-			return motion; }
-		case MoveDirs::LeftU: {
-			Index2 motion = { -1,1};
-			return motion; }
-		case MoveDirs::RightD: {
-			Index2 motion = { 1,-1 };
-			return motion; }
-		case MoveDirs::RightU: {
-			Index2 motion = { 1,1 };
-			return motion; }
-		default: {
-			Index2 motion = { 0,0 };
-			return motion; }
-		}
 
 	}
 
