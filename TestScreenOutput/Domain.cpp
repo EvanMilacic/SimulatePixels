@@ -3,7 +3,7 @@
 namespace simulate {
 	bool Domain::move(Index2 ind, MoveDirs dir)
 	{
-		int index = CalcIndex(ind);
+		int index = field.CalcIndex(ind);
 		return move(index, dir);
 	}
 	bool Domain::move(int index, MoveDirs dir) {
@@ -13,7 +13,7 @@ namespace simulate {
 		Index_t targetIndex = getDirIndex(index, motion);
 		//If cell is not occupied, move there
 		if (isDefault(targetIndex)) {
-			flip(index, targetIndex);
+			field.flip(index, targetIndex);
 			return true;
 		}
 		else {
@@ -49,16 +49,16 @@ namespace simulate {
 		}
 
 		//Move cell to target location
-		MatType temp = field[index];
-		field[index] = MatType::Default;
-		field[targetIndex] = temp;
+		MatType temp = field.at(index);
+		field.clear(index);
+		field.set(targetIndex,temp);
 		//Provide succes boolean
 		return true;
 	}
 
 	Index_t Domain::getDirIndex(Index_t index, Index2 motion) {
 
-		Index2 currentInd = CalcIndex2(index);
+		Index2 currentInd = field.CalcIndex2(index);
 		Index2 newInd;
 
 		//Move index along the motion vector
@@ -70,12 +70,12 @@ namespace simulate {
 		newInd.j = math::clamp(0, newInd.j, nHeight - 1);
 
 		//Convert 2D inex to 1D
-		return CalcIndex(newInd);
+		return field.CalcIndex(newInd);
 
 	}
 
 	bool Domain::isOnEdge(Index_t index) {
-		Index2 ind = CalcIndex2(index);
+		Index2 ind = field.CalcIndex2(index);
 		return isOnEdge(ind);
 	}
 

@@ -39,6 +39,28 @@ public:
 	}
 
 	//Setters 
+	void set(int width, int height, MatType type) {
+		int index = CalcIndex(width, height);
+		typeArray[index] = type;
+	}
+
+	void set(Index2 ind, MatType type) {
+		set(ind.i, ind.j, type);
+	}
+
+	void set(int index, MatType type) {
+		typeArray[index] = type;
+	}
+
+	void clear(int width, int height) {
+		int index = CalcIndex(width, height);
+		typeArray[index] = MatType::Default;
+	}
+
+	void clear(Index_t index) {
+		typeArray[index] = MatType::Default;
+	}
+
 	void setSize(int _width, int _height) {
 		width = _width;
 		height = _height;
