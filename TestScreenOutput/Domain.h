@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 
-
 #include "Globals.h"
 #include "Enums.h"
 #include "MyMath.h"
