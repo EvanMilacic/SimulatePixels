@@ -19,7 +19,6 @@ namespace simulate {
 		else {
 			return false;
 		}
-
 	}
 
 	bool Domain::move(int index, MoveDirs dir, int stepLength) {
