@@ -25,8 +25,13 @@ namespace multi_t {
 		int NJsubs;
 		int nSubs;
 
-
 		void divideField(void);
+
+	public:
+
+		inline Index2 getIJsize(void) { Index2 IJsize = { iSize, jSize }; return IJsize; }
+		inline int getSubs(void) {	return nSubs;}
+		inline Index2 getIJsubs(void) { Index2 IJsubs = { NIsubs, NJsubs }; return IJsubs;}
 
 	};
 
