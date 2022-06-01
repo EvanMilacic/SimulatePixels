@@ -69,4 +69,29 @@ public:
 
 	};
 
+	TEST_CLASS(TestDecompositionData) {
+public:
+	TEST_METHOD(resize0) {
+		DecompositionData data;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(),(size_t)0);
+	}
+	TEST_METHOD(resize255) {
+		size_t resizeValue = 255;
+		DecompositionData data;
+		data.numberOfSubDivisions = resizeValue;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(), resizeValue);
+	}
+
+	TEST_METHOD(resizemin255) {
+		size_t resizeValue = 255;
+		DecompositionData data;
+		data.numberOfSubDivisions = -(int)resizeValue;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(), (size_t)0);
+	}
+
+	};
+
 }
