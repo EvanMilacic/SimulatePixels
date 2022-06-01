@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <vector>
 #include "Enums.h"
 
 struct RenderState {
@@ -77,6 +78,27 @@ struct LUT_MotionVector {
 		default: {
 			Index2 motion = { 0,0 };
 			return motion; }
+		}
+	}
+
+};
+
+struct DecompositionData {
+	Index2 fieldSize;
+	Index2 subFieldSize;
+	
+	Index_t numberOfSubDivisions = 0;
+	Index2 divisionFieldSizes;
+
+	std::vector<Index_t> tags;
+	std::vector<Index2> subOrigins;
+	std::vector<Index2> subSizes;
+
+	void resizeArrays(void) {
+		if (numberOfSubDivisions > 0) {
+			tags.resize(this->numberOfSubDivisions);
+			subOrigins.resize(this->numberOfSubDivisions);
+			subSizes.resize(this->numberOfSubDivisions);
 		}
 	}
 
