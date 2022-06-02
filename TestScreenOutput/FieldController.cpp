@@ -95,3 +95,7 @@ void FieldController::flip(int index, Index2 motionVector) {
 	Index2 ind_dir = CalcIndex2(index, motionVector);
 	flip(ind, ind_dir);
 }
+
+bool FieldController::isDefault(Index_t index) {
+	return (field->at(index) == MatType::Default);
+}

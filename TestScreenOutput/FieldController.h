@@ -50,6 +50,6 @@ public:
 	void flip(int index_1, int index_2); 
 	void flip(Index2 ind_1, Index2 ind_2);
 	void flip(int index, Index2 motionVector); 
-
+	bool isDefault(Index_t index);
 };
 
