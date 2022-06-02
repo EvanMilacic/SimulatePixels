@@ -5,12 +5,14 @@
 
 class Field
 {
-public:
+private:
 	int width = 0;
 	int height = 0;
 	int size = 0;
 
 	std::vector<MatType> typeArray;
+
+public:
 
 	Field() {};
 	Field(int _width, int _height) {
@@ -19,99 +21,16 @@ public:
 
 	~Field() {};
 
-	int CalcIndex(int i, int j) {
-		return width * j + i;
-	}
-
-	int CalcIndex(Index2 ind) {
-		return CalcIndex(ind.i, ind.j);
-	}
-
-	Index2 CalcIndex2(int index) {
-		Index2 indices{ (int)(index - floor(index / width) * width), (int)floor(index / width) };
-		return indices;
-	}
-
-	Index2 CalcIndex2(int index, Index2 motionVector) {
-		Index2 ind = CalcIndex2(index);
-		ind += motionVector;
-		return ind;
-	}
-
 	//Setters 
-	void set(int width, int height, MatType type) {
-		int index = CalcIndex(width, height);
-		typeArray[index] = type;
-	}
-
-	void set(Index2 ind, MatType type) {
-		set(ind.i, ind.j, type);
-	}
-
-	void set(int index, MatType type) {
-		typeArray[index] = type;
-	}
-
-	void clear(int width, int height) {
-		int index = CalcIndex(width, height);
-		typeArray[index] = MatType::Default;
-	}
-
-	void clear(Index_t index) {
-		typeArray[index] = MatType::Default;
-	}
-
-	void setSize(int _width, int _height) {
-		width = _width;
-		height = _height;
-		typeArray.resize(width * height);
-		size = typeArray.size();
-	}
+	inline void set(int index, MatType type); 
+	void setSize(int _width, int _height); 
 
 	//Getters
-	int getSize(void) { return typeArray.size(); };
-	int getWidth(void) { return width; };
-	int getHeight(void) { return height; };
+	int getSize(void); 
+	int getWidth(void); 
+	int getHeight(void); 
+	MatType at(int index); 
 
-	MatType at(Index2 ind) {
-		return at(ind.i, ind.j);
-	}
-
-	MatType at(int width, int height) {
-		int index = CalcIndex(width, height);
-		return at(index);
-	}
-
-	MatType at(int index) {
-		return typeArray[index];
-	}
-
-	MatType at(Index2 ind, Index2 motionVector) {
-		int index = CalcIndex(ind);
-		return at(index, motionVector);
-	}
-
-	MatType at(int index, Index2 motionVector) {
-		Index2 ind_dir = CalcIndex2(index, motionVector);
-		return at(ind_dir);
-	}
-
-	//Operations
-	void flip(int index_1, int index_2) {
-		MatType temp = typeArray[index_1];
-		typeArray[index_1] = typeArray[index_2];
-		typeArray[index_2] = temp;
-	}
-	void flip(Index2 ind_1, Index2 ind_2) {
-		int index_1 = CalcIndex(ind_1);
-		int index_2 = CalcIndex(ind_2);
-		flip(index_1, index_2);
-	}
-	void flip(int index, Index2 motionVector) {
-		Index2 ind = CalcIndex2(index);
-		Index2 ind_dir = CalcIndex2(index, motionVector);
-		flip(ind, ind_dir);
-	}
 
 };
 
