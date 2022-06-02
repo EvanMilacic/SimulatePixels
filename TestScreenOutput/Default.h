@@ -20,7 +20,7 @@ namespace materie {
 		~Default() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {};
+		void UpdatePosition(int index, simulate::BaseDomain* domain) {};
 
 	private:
 

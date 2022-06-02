@@ -20,7 +20,7 @@ public:
     ~Water() {};
 
 	void UpdateState(void) {};
-	void UpdatePosition(int index, simulate::Domain* domain) {
+	void UpdatePosition(int index, simulate::BaseDomain* domain) {
 		Index_t i = index;
 		if (domain->move(i, MoveDirs::Down)) {
 			return;

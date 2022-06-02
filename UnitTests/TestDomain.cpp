@@ -25,25 +25,25 @@ public:
 		int width = 10;
 		int height = 12;
 		int size = width * height;
-		simulate::Domain testDomain(width, height);
+		simulate::BaseDomain testDomain(width, height);
 
 		Assert::AreEqual(size, testDomain.getSize());
 	}
 
 	TEST_METHOD(Set2D) {
-		simulate::Domain testDomain(5, 5);
+		simulate::BaseDomain testDomain(5, 5);
 		testDomain.set(2, 2, MatType::Sand);
 		Assert::AreEqual(MatType::Sand, testDomain.at(2, 2));
 	}
 
 	TEST_METHOD(Set1D) {
-		simulate::Domain testDomain(5, 5);
+		simulate::BaseDomain testDomain(5, 5);
 		testDomain.set(15, MatType::Sand);
 		Assert::AreEqual(MatType::Sand, testDomain.at(15));
 	}
 
 	TEST_METHOD(Clear) {
-		simulate::Domain testDomain(5, 5);
+		simulate::BaseDomain testDomain(5, 5);
 		testDomain.set(24, MatType::Blood);
 		testDomain.clear(24);
 		Assert::AreEqual(testDomain.at(24), MatType::Default);
@@ -51,18 +51,18 @@ public:
 	TEST_METHOD(CalcIndexTesting) {
 		
 		//Test conversion to 1D
-		simulate::Domain test1D(4, 6);
+		simulate::BaseDomain test1D(4, 6);
 		test1D.set(3,5, MatType::Sand);
 		Assert::AreEqual(test1D.at(23),MatType::Sand);
 
 		//Test conversion to 2D
-		simulate::Domain test2D(4, 6);
+		simulate::BaseDomain test2D(4, 6);
 		test2D.set(23, MatType::Sand);
 		Assert::AreEqual(test2D.at(23), MatType::Sand);
 	}
 
 	TEST_METHOD(OnEdgeTest) {
-		simulate::Domain testDomain(4, 6);
+		simulate::BaseDomain testDomain(4, 6);
 		Assert::IsTrue(testDomain.isOnEdge(0));
 		Assert::IsTrue(testDomain.isOnEdge(4));
 		Assert::IsTrue(testDomain.isOnEdge(8));
@@ -72,14 +72,14 @@ public:
 
 	TEST_METHOD(Move) {
 		Index2 start{ 2,2 };
-		simulate::Domain testDomain(5, 5);
+		simulate::BaseDomain testDomain(5, 5);
 		testDomain.set(start, MatType::Sand);
 		bool testBool = testDomain.move(start, MoveDirs::Up);
 		Assert::AreEqual(MatType::Sand, testDomain.at(start,MoveDirs::Up));
 	}
 
 	TEST_METHOD(Flip) {
-		simulate::Domain testDomain(4, 6);
+		simulate::BaseDomain testDomain(4, 6);
 		Index2 ind1{ 3,5 };
 		Index2 ind2{ 0,0 };
 		testDomain.set(ind1, MatType::Blood);

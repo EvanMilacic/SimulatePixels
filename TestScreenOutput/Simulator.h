@@ -15,7 +15,7 @@ private:
 	bool withEdge = false;
 	std::vector<int> activeMaterialsList;
 
-	Domain domain;
+	BaseDomain domain;
 	
 	materie::MaterialFactory matFact;
 
@@ -46,7 +46,7 @@ public:
 	MatType getCellMaterial(int i, int j) { return domain.at(i, j); };
 	unsigned int getCellColor(int i, int j);
 
-	Domain* giveGuts(void) {
+	BaseDomain* giveGuts(void) {
 		return &domain;
 	}
 

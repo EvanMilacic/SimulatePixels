@@ -1,19 +1,19 @@
 #include "Domain.h"
 
 namespace simulate {
-	bool Domain::move(Index2 ind, MoveDirs dir)
+	bool BaseDomain::move(Index2 ind, MoveDirs dir)
 	{
-		int index = field.CalcIndex(ind);
+		int index = field->CalcIndex(ind);
 		return move(index, dir);
 	}
-	bool Domain::move(int index, MoveDirs dir) {
+	bool BaseDomain::move(int index, MoveDirs dir) {
 		//Get Motion vector
 		Index2 motion = LUT_MV.get(dir);
 		//Calculate the target cell
 		Index_t targetIndex = getDirIndex(index, motion);
 		//If cell is not occupied, move there
 		if (isDefault(targetIndex)) {
-			field.flip(index, targetIndex);
+			field->flip(index, targetIndex);
 			return true;
 		}
 		else {
@@ -21,7 +21,7 @@ namespace simulate {
 		}
 	}
 
-	bool Domain::move(int index, MoveDirs dir, int stepLength) {
+	bool BaseDomain::move(int index, MoveDirs dir, int stepLength) {
 
 		Index_t workingIndex, targetIndex;
 		workingIndex = index;
@@ -48,16 +48,16 @@ namespace simulate {
 		}
 
 		//Move cell to target location
-		MatType temp = field.at(index);
-		field.clear(index);
-		field.set(targetIndex,temp);
+		MatType temp = field->at(index);
+		field->clear(index);
+		field->set(targetIndex,temp);
 		//Provide succes boolean
 		return true;
 	}
 
-	Index_t Domain::getDirIndex(Index_t index, Index2 motion) {
+	Index_t BaseDomain::getDirIndex(Index_t index, Index2 motion) {
 
-		Index2 currentInd = field.CalcIndex2(index);
+		Index2 currentInd = field->CalcIndex2(index);
 		Index2 newInd;
 
 		//Move index along the motion vector
@@ -69,16 +69,16 @@ namespace simulate {
 		newInd.j = math::clamp(0, newInd.j, nHeight - 1);
 
 		//Convert 2D inex to 1D
-		return field.CalcIndex(newInd);
+		return field->CalcIndex(newInd);
 
 	}
 
-	bool Domain::isOnEdge(Index_t index) {
-		Index2 ind = field.CalcIndex2(index);
+	bool BaseDomain::isOnEdge(Index_t index) {
+		Index2 ind = field->CalcIndex2(index);
 		return isOnEdge(ind);
 	}
 
-	bool Domain::isOnEdge(Index2 ind){
+	bool BaseDomain::isOnEdge(Index2 ind){
 		if (ind.i == 0 || ind.i == nWidth-1) {
 			return true;
 		}
