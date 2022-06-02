@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <vector>
 #include "Enums.h"
+#include "UserDefs.h"
 
 struct RenderState {
 	int height, width;
