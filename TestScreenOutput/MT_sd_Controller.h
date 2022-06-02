@@ -13,7 +13,7 @@ namespace multi_t {
 		};
 
 
-		void multiThreadTesting(int nThreads);
+		void multiThread(int nThreads);
 
 	private:
 		simulate::Simulator* fController;

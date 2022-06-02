@@ -34,6 +34,8 @@ namespace multi_t {
 
 		simulate::Simulator* simulator = nullptr;
 
+		void simulateSubDomain(void);
+
 
 	};
 

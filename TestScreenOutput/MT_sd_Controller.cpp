@@ -61,33 +61,33 @@ namespace multi_t {
 	}
 
 
-	void MT_sd_Controller::multiThreadTesting(int nThreads) {
+	void MT_sd_Controller::multiThread(int nThreads) {
 
 #pragma omp parallel for
 		for (int n = 0; n < nSubs; n += 4) {
 			if (domainsList[n].tag == 1) {
-				domainsList[n].DoSomethig();
+				domainsList[n].simulateSubDomain();
 			}
 		}
 
 #pragma omp parallel for
 		for (int n = 1; n < nSubs; n += 4) {
 			if (domainsList[n].tag == 2) {
-				domainsList[n].DoSomethig();
+				domainsList[n].simulateSubDomain();
 			}
 		}
 
 #pragma omp parallel for
 		for (int n = 2; n < nSubs; n += 4) {
 			if (domainsList[n].tag == 3) {
-				domainsList[n].DoSomethig();
+				domainsList[n].simulateSubDomain();
 			}
 		}
 
 #pragma omp parallel for
 		for (int n = 3; n < nSubs; n += 4) {
 			if (domainsList[n].tag == 4) {
-				domainsList[n].DoSomethig();
+				domainsList[n].simulateSubDomain();
 			}
 		}
 
