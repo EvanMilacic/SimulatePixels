@@ -2,7 +2,7 @@
 
 bool DomainInterface::move(Index2 ind, MoveDirs dir)
 {
-	int index = field->CalcIndex(ind);
+	Index_t index = field->CalcIndex(ind);
 	return move(index, dir);
 }
 bool DomainInterface::move(Index_t index, MoveDirs dir) {
@@ -30,7 +30,7 @@ bool DomainInterface::move(Index_t index, MoveDirs dir, Index_t stepLength) {
 
 	//Loop over the length of the vector
 	//If an obstructed cell is found, the cell will only be moved until that cell
-	for (int n = 0; n < stepLength; n++) {
+	for (Index_t n = 0; n < stepLength; n++) {
 		//Get target cell id
 		targetIndex = getDirIndex(workingIndex, motion);
 		//Check if it is empty
