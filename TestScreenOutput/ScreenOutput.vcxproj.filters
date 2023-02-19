@@ -39,6 +39,9 @@
     <ClCompile Include="win32_platform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Domain.h">
@@ -96,6 +99,18 @@
       <Filter>Header Files\Utils\structs</Filter>
     </ClInclude>
     <ClInclude Include="Index2.h">
+      <Filter>Header Files\Utils\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LargeVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Motion2.h">
       <Filter>Header Files\Utils\structs</Filter>
     </ClInclude>
   </ItemGroup>

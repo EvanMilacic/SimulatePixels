@@ -10,16 +10,16 @@ namespace simulate {
 class Simulator
 {
 private:
-	int nWidth;
-	int nHeight;
+	Index_t nWidth;
+	Index_t nHeight;
 	bool withEdge = false;
-	std::vector<int> activeMaterialsList;
+	std::vector<Index_t> activeMaterialsList;
 
 	Domain domain;
 	
 	materie::MaterialFactory matFact;
 
-	bool cellIsActive(int n);
+	bool cellIsActive(Index_t n);
 	void fillActiveMaterialsList(void);
 	void moveActiveCells(void);
 	void applyPhysics(void);
@@ -29,7 +29,7 @@ public:
 	Simulator(RenderState renderState) : domain(10,10){
 		setSize(renderState);
 	}
-	Simulator(int width, int height): domain(10,10) {
+	Simulator(Index_t width, Index_t height): domain(10,10) {
 		setSize(width, height);
 	};
 	~Simulator() {};
@@ -39,12 +39,12 @@ public:
 
 
 	//Getters
-	int getNumWidth() { return nWidth; };
-	int getNumHeight() { return nHeight; };
-	int getNumSize() { return nWidth * nHeight; };
+	Index_t getNumWidth() { return nWidth; };
+	Index_t getNumHeight() { return nHeight; };
+	Index_t getNumSize() { return nWidth * nHeight; };
 
-	MatType getCellMaterial(int i, int j) { return domain.at(i, j); };
-	unsigned int getCellColor(int i, int j);
+	MatType getCellMaterial(Index_t i, Index_t j) { return domain.at(i, j); };
+	Index_t getCellColor(Index_t i, Index_t j);
 
 	Domain* giveGuts(void) {
 		return &domain;
@@ -54,7 +54,7 @@ public:
 	void setSize(RenderState renderState) {
 		setSize(renderState.width,renderState.height);
 	};
-	void setSize(int width, int height) {
+	void setSize(Index_t width, Index_t height) {
 		nWidth = width;
 		nHeight = height;
 		domain.setSize(width, height);

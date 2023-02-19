@@ -22,9 +22,9 @@ namespace UnitTests {
 	TEST_CLASS(TestDomain) {
 public:
 	TEST_METHOD(Constructor) {
-		int width = 10;
-		int height = 12;
-		int size = width * height;
+		Index_t width = 10;
+		Index_t height = 12;
+		Index_t size = width * height;
 		simulate::Domain testDomain(width, height);
 
 		Assert::AreEqual(size, testDomain.getSize());

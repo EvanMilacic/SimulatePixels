@@ -3,36 +3,38 @@
 
 
 #include "Globals.h"
+#include "Defines.h"
 #include "Enums.h"
 #include "MyMath.h"
 #include "Index2.h"
+#include "Motion2.h"
 
 namespace simulate {
 
 	class Domain
 	{
 	private:
-		int nWidth;
-		int nHeight;
-		int nSize;
+		Index_t nWidth;
+		Index_t nHeight;
+		Index_t nSize;
 		std::vector<MatType> field;
 
-		int CalcIndex(int i, int j) {
+		Index_t CalcIndex(Index_t i, Index_t j) {
 			return nWidth * j + i;
 		};
 		
-		int CalcIndex(Index2 ind) {
+		Index_t CalcIndex(Index2 ind) {
 			return CalcIndex(ind.i, ind.j);
 		}
 
-		Index2 CalcIndex2(int index) {
-			Index2 indices{ (int)(index - floor(index / nWidth) * nWidth), (int)floor(index / nWidth) };
+		Index2 CalcIndex2(Index_t index) {
+			Index2 indices{ (Index_t)(index - floor(index / nWidth) * nWidth), (Index_t)floor(index / nWidth) };
 			return indices;
 		}
 
-		Index2 CalcIndex2(int index, MoveDirs direction) {
+		Index2 CalcIndex2(Index_t index, MoveDirs direction) {
 			Index2 ind = CalcIndex2(index);
-			Index2 dir = getMotionVector(direction);
+			Motion2 dir = getMotionVector(direction);
 			ind += dir;
 			return ind;
 		}
@@ -43,19 +45,19 @@ namespace simulate {
 
 
 	public:
-		Domain(int width, int height) { setSize(width, height); };
+		Domain(Index_t width, Index_t height) { setSize(width, height); };
 		~Domain() {};
 
 
 		// Setters
-		void setSize(int width, int height) {
+		void setSize(Index_t width, Index_t height) {
 			nWidth = width;
 			nHeight = height;
 			field.resize(nWidth * nHeight);
 		}
 
-		void set(int width, int height, MatType type) {
-			int index = CalcIndex(width, height);
+		void set(Index_t width, Index_t height, MatType type) {
+			Index_t index = CalcIndex(width, height);
 			field[index] = type;
 		}
 
@@ -63,12 +65,12 @@ namespace simulate {
 			set(ind.i, ind.j, type);
 		}
 
-		void set(int index, MatType type) {
+		void set(Index_t index, MatType type) {
 			field[index] = type;
 		}
 
-		void clear(int width, int height) {
-			int index = CalcIndex(width, height);
+		void clear(Index_t width, Index_t height) {
+			Index_t index = CalcIndex(width, height);
 			field[index] = MatType::Default;
 		}
 
@@ -77,9 +79,9 @@ namespace simulate {
 		}
 
 		//Getters
-		int getSize(void) { return field.size(); };
-		int getWidth(void) { return nWidth; };
-		int getHeight(void) { return nHeight; };
+		Index_t getSize(void) { return static_cast<Index_t>(field.size()); };
+		Index_t getWidth(void) { return nWidth; };
+		Index_t getHeight(void) { return nHeight; };
 
 		bool isOnEdge(Index_t index);
 		bool isOnEdge(Index2 ind);
@@ -88,55 +90,55 @@ namespace simulate {
 			return at(ind.i, ind.j);
 		}
 
-		MatType at(int width, int height) {
-			int index = CalcIndex(width, height);
+		MatType at(Index_t width, Index_t height) {
+			Index_t index = CalcIndex(width, height);
 			return at(index);
 		}
 
-		MatType at(int index) {
+		MatType at(Index_t index) {
 				return field[index];
 		}
 
 		MatType at(Index2 ind, MoveDirs direction) {
-			int index = CalcIndex(ind);
+			Index_t index = CalcIndex(ind);
 			return at(index, direction);
 		}
 
-		MatType at(int index, MoveDirs direction) {
+		MatType at(Index_t index, MoveDirs direction) {
 			Index2 ind_dir = CalcIndex2(index,direction);
 			return at(ind_dir);
 		}
 
 		//move operations
 		bool move(Index2 ind, MoveDirs dir);
-		bool move(int index, MoveDirs dir);
-		bool move(int index, MoveDirs dir, int stepLength);
+		bool move(Index_t index, MoveDirs dir);
+		bool move(Index_t index, MoveDirs dir, Index_t stepLength);
 
-		void flip(int index_1, int index_2) {
+		void flip(Index_t index_1, Index_t index_2) {
 			MatType temp = field[index_1];
 			field[index_1] = field[index_2];
 			field[index_2] = temp;
 		}
 		void flip(Index2 ind_1, Index2 ind_2) {
-			int index_1 = CalcIndex(ind_1);
-			int index_2 = CalcIndex(ind_2);
+			Index_t index_1 = CalcIndex(ind_1);
+			Index_t index_2 = CalcIndex(ind_2);
 			flip(index_1, index_2);
 		}
-		void flip(int index, MoveDirs direction) {
+		void flip(Index_t index, MoveDirs direction) {
 			Index2 ind = CalcIndex2(index);
 			Index2 ind_dir = CalcIndex2(index, direction);
 			flip(ind, ind_dir);
 		}
 
 		Index_t getProjectionIndex(Index_t index, MoveDirs direction) {
-			Index2 motion = getMotionVector(direction);
+			Motion2 motion = getMotionVector(direction);
 			Index_t targetIndex = getDirIndex(index, motion);
 			return targetIndex;
 		}
 
 		private:
-		Index_t getDirIndex(Index_t index, Index2 motion);
-		Index2 getMotionVector(MoveDirs dir);
+		Index_t getDirIndex(Index_t index, Motion2 motion);
+		Motion2 getMotionVector(MoveDirs dir);
 
 	}; //class Domain
 

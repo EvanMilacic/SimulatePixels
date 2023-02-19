@@ -14,15 +14,15 @@ namespace simulate {
 
 		activeMaterialsList.clear();
 
-		int nActiveCells = 0;
-		for (int n = 0; n < domain.getSize(); n++) {
+		Index_t nActiveCells = 0;
+		for (Index_t n = 0; n < domain.getSize(); n++) {
 			if (cellIsActive(n)) {
 				activeMaterialsList.push_back(n);
 			}
 		}
 	}
 
-	bool Simulator::cellIsActive(int n) {
+	bool Simulator::cellIsActive(Index_t n) {
 		if (domain.isOnEdge(n) && !withEdge) {
 			return false;
 		}
@@ -97,7 +97,7 @@ namespace simulate {
 		return false;
 	}
 
-	unsigned int Simulator::getCellColor(int i, int j) {
+	unsigned int Simulator::getCellColor(Index_t i, Index_t j) {
 		MatType type = domain.at(i, j);
 		materie::Material* material = matFact.getMaterial(type);
 		unsigned int color = material->getColor();
@@ -107,38 +107,38 @@ namespace simulate {
 
 	//Actor functions (act on the simulation
 	void Simulator::setCenterSand(void) {
-		int i = (int)floor(nWidth * 0.50);
-		int j = (int)floor(nHeight * 0.250);
+		Index_t i = (Index_t)floor(nWidth * 0.50);
+		Index_t j = (Index_t)floor(nHeight * 0.250);
 
 		domain.set(i, j, MatType::Sand);
 
-		i = (int)floor(nWidth * 0.05);
-		j = (int)floor(nHeight * 0.250);
+		i = (Index_t)floor(nWidth * 0.05);
+		j = (Index_t)floor(nHeight * 0.250);
 
 		domain.set(i, j, MatType::Sand);
 
-		i = (int)floor(nWidth * 0.25);
-		j = (int)floor(nHeight * 0.50);
+		i = (Index_t)floor(nWidth * 0.25);
+		j = (Index_t)floor(nHeight * 0.50);
 
 		domain.set(i, j, MatType::Salt);
 
-		i = (int)floor(nWidth * 0.15);
-		j = (int)floor(nHeight * 0.33);
+		i = (Index_t)floor(nWidth * 0.15);
+		j = (Index_t)floor(nHeight * 0.33);
 
 		domain.set(i, j, MatType::Blood);
 
-		i = (int)floor(nWidth * 0.60);
-		j = (int)floor(nHeight * 0.33);
+		i = (Index_t)floor(nWidth * 0.60);
+		j = (Index_t)floor(nHeight * 0.33);
 
 		domain.set(i, j, MatType::Water);
 
-		i = (int)floor(nWidth * 0.75);
-		j = (int)floor(nHeight * 0.250);
+		i = (Index_t)floor(nWidth * 0.75);
+		j = (Index_t)floor(nHeight * 0.250);
 
 		domain.set(i, j, MatType::Steam);
 
-		i = (int)floor(nWidth * 0.15);
-		j = (int)floor(nHeight * 0.750);
+		i = (Index_t)floor(nWidth * 0.15);
+		j = (Index_t)floor(nHeight * 0.750);
 
 		domain.set(i, j, MatType::Smoke);
 	}
