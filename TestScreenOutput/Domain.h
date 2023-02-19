@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Enums.h"
 #include "MyMath.h"
+#include "Index2.h"
 
 namespace simulate {
 

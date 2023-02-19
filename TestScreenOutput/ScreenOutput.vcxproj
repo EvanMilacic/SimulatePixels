@@ -114,13 +114,14 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MyMath.h" />
+    <ClInclude Include="Renderstate.h" />
     <ClInclude Include="Salt.h" />
     <ClInclude Include="Sand.h" />
     <ClInclude Include="ScreenRenderer.h" />
     <ClInclude Include="Simulator.h" />
     <ClInclude Include="Smoke.h" />
     <ClInclude Include="Steam.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Index2.h" />
     <ClInclude Include="Water.h" />
     <ClInclude Include="Wood.h" />
   </ItemGroup>

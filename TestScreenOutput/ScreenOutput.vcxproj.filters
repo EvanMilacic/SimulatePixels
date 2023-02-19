@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Header Files\Materials">
+      <UniqueIdentifier>{5a7ec485-a5b2-4383-92eb-8477c59fca66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{4f588f06-d4e3-4483-adf0-c18d06009c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils\structs">
+      <UniqueIdentifier>{2898497e-caf6-46ae-8a2e-c6d8704b8b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Domain.cpp">
@@ -32,37 +41,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Blood.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Default.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Domain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fire.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MaterialFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Salt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScreenRenderer.h">
@@ -71,20 +56,47 @@
     <ClInclude Include="Simulator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Blood.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Default.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Fire.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Salt.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Sand.h">
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
     <ClInclude Include="Smoke.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
     <ClInclude Include="Steam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Structs.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
     <ClInclude Include="Water.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
     <ClInclude Include="Wood.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="MyMath.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderstate.h">
+      <Filter>Header Files\Utils\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="Index2.h">
+      <Filter>Header Files\Utils\structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

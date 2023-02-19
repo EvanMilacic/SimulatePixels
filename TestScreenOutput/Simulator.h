@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "Structs.h"
+#include "Index2.h"
 #include "Domain.h"
 #include "Enums.h"
 #include "MaterialFactory.h"

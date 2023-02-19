@@ -1,5 +1,5 @@
 #pragma once
-#include "Structs.h"
+#include "Renderstate.h"
 #include "Simulator.h"
 
 namespace render {

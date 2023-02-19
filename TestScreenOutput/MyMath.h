@@ -7,5 +7,4 @@ namespace math {
 		if (val > max) return max;
 		return val;
 	}
-
 }

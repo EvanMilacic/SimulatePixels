@@ -1,5 +1,5 @@
 #pragma once
-#include "Structs.h"
+#include "Renderstate.h"
 
 typedef unsigned int Index_t;
 
