@@ -20,23 +20,22 @@ namespace materie {
 		~Steam() {};
 
 		void UpdateState(void) {};
-		void UpdatePosition(int index, simulate::Domain* domain) {
-			Index_t i = index;
-			if (domain->move(i, MoveDirs::Up)) {
+		void UpdatePosition(Index2 ind, simulate::Domain* domain) {
+			if (domain->move(ind, MoveDirs::Up)) {
 				return;
 			}
 
-			if (flipDirection() && domain->move(i, MoveDirs::LeftU)) {
+			if (flipDirection() && domain->move(ind, MoveDirs::LeftU)) {
 				return;
 			}
-			else if (domain->move(i, MoveDirs::RightU)) {
+			else if (domain->move(ind, MoveDirs::RightU)) {
 				return;
 			}
 			
-			if (flipDirection() && domain->move(i, MoveDirs::Left)) {
+			if (flipDirection() && domain->move(ind, MoveDirs::Left)) {
 				return;
 			}
-			else if (domain->move(i, MoveDirs::Right)) {
+			else if (domain->move(ind, MoveDirs::Right)) {
 				return;
 			}
 		};

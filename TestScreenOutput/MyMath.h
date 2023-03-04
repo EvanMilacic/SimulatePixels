@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <cstdlib>
 
 namespace math {
 
@@ -8,4 +9,9 @@ namespace math {
 		if (val > max) return max;
 		return val;
 	}
+
+	inline bool randomBool() {
+		return (std::rand() % 2 == 1)? true : false ;
+	}
+
 }

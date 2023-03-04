@@ -21,16 +21,15 @@ public:
 	~Sand() {};
 
 	void UpdateState(void) {};
-	void UpdatePosition(int index, simulate::Domain* domain) {
-		Index_t i = index;
-		if (domain->move(i, MoveDirs::Down)) {
+	void UpdatePosition(Index2 ind, simulate::Domain* domain) {
+		if (domain->move(ind, MoveDirs::Down)) {
 			return;
 		}
 
-		if (flipDirection() && domain->move(i, MoveDirs::LeftD)) {
+		if (flipDirection() && domain->move(ind, MoveDirs::LeftD)) {
 			return;
 		}
-		else if (domain->move(i, MoveDirs::RightD)) {
+		else if (domain->move(ind, MoveDirs::RightD)) {
 			return;
 		}
 
