@@ -1,7 +1,9 @@
 #pragma once
+#include "MyMath.h"
 #include "Globals.h"
 #include "Enums.h"
 #include "Domain.h"
+
 
 namespace materie {
 
@@ -19,7 +21,7 @@ namespace materie {
 		float density;
 		float damage;
 
-		bool direction = true; // defines left as first direction on true
+		bool direction = math::randomBool(); // defines left as first direction on true
 
 		bool flipDirection(void) {
 			direction = !direction;
@@ -43,7 +45,7 @@ namespace materie {
 		~Material() {};
 
 		virtual void UpdateState(void) {};
-		virtual void UpdatePosition(int index, simulate::Domain* domain) {};
+		virtual void UpdatePosition(Index2 ind, simulate::Domain* domain) {};
 		
 		//Getters
 		MatType isType(void) { return type; };

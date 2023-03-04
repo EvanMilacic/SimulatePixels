@@ -107,12 +107,17 @@
   <ItemGroup>
     <ClInclude Include="Blood.h" />
     <ClInclude Include="Default.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="Field.h" />
+    <ClInclude Include="FieldData.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="LargeVector.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
+    <ClInclude Include="Motion2.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="Renderstate.h" />
     <ClInclude Include="Salt.h" />

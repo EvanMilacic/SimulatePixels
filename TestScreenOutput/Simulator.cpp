@@ -14,22 +14,32 @@ namespace simulate {
 
 		activeMaterialsList.clear();
 
-		int nActiveCells = 0;
-		for (int n = 0; n < domain.getSize(); n++) {
-			if (cellIsActive(n)) {
-				activeMaterialsList.push_back(n);
+		Index_t nActiveCells = 0;
+		for (Index_t _width = 0; _width < domain.getWidth(); _width++) {
+			for (Index_t _height = 0; _height < domain.getHeight(); _height++){
+				if (cellIsActive({ _width, _height })) {
+					activeMaterialsList.push_back({ _width, _height });
+					nActiveCells += 1;
+				}
 			}
 		}
+		std::cout << "Number of active materials = " << nActiveCells << std::endl;
 	}
 
-	bool Simulator::cellIsActive(int n) {
-		if (domain.isOnEdge(n) && !withEdge) {
+	bool Simulator::cellIsActive(Index2 ind) {
+		if (domain.isOnEdge(ind) && !withEdge) {
 			return false;
 		}
 		else {
-			MatType type = domain.at(n);
+			MatType type = domain.at(ind);
 			materie::Material* material = matFact.getMaterial(type);
+			if (type != MatType::Default) {
+				std::cout << "We have water" << std::endl;
+			}
 			bool isDynamic = material->isDynamic();
+			if (isDynamic) {
+				std::cout << "Material is dynamic" << std::endl;
+			}
 			return isDynamic;
 		}
 	}
@@ -40,12 +50,12 @@ namespace simulate {
 
 		MatType type;
 		materie::Material* material;
-		Index_t index;
+		Index2 ind;
 		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {		
-			index = activeMaterialsList[n];
-			type = domain.at(index);
+			ind = activeMaterialsList[n];
+			type = domain.at(ind);
 			material = matFact.getMaterial(type);
-			material->UpdatePosition(index, giveGuts());
+			material->UpdatePosition(ind, giveGuts());
 		}
 	}
 
@@ -53,52 +63,52 @@ namespace simulate {
 		withEdge = true;
 		fillActiveMaterialsList();
 
-		Index_t index;
+		Index2 ind;
 		for (Index_t n = 0; n < activeMaterialsList.size(); n++) {
-			index = activeMaterialsList[n];
-			applyDensity(index);
+			ind = activeMaterialsList[n];
+			applyDensity(ind);
 		}
 	}
 
-	void Simulator::applyDensity(Index_t index) {
+	void Simulator::applyDensity(Index2 ind) {
 
-		Index_t indexUp;
-		indexUp = domain.getProjectionIndex(index, MoveDirs::Up);
-		if (indexUp < domain.getSize() && evaluateDensity(index, indexUp) ) {
+		Index2 indUp;
+		indUp = domain.getProjectionIndex(ind, MoveDirs::Up);
+		if (domain.isInBounds(indUp) && evaluateDensity(ind, indUp)) {
 			return;
 		}
 
-		Index_t indexLeftUp;
-		indexLeftUp = domain.getProjectionIndex(index, MoveDirs::LeftU);
-		if (indexLeftUp < domain.getSize() && evaluateDensity(index, indexLeftUp)) {
+		Index2 indLeftUp;
+		indLeftUp = domain.getProjectionIndex(ind, MoveDirs::LeftU);
+		if (domain.isInBounds(indLeftUp) && evaluateDensity(ind, indLeftUp)) {
 			return;
 		}
 
-		Index_t indexRightUp;
-		indexRightUp = domain.getProjectionIndex(index, MoveDirs::RightU);
-		if (indexRightUp < domain.getSize() && evaluateDensity(index, indexRightUp)) {
+		Index2 indRightUp;
+		indRightUp = domain.getProjectionIndex(ind, MoveDirs::RightU);
+		if (domain.isInBounds(indRightUp) && evaluateDensity(ind, indRightUp)) {
 			return;
 		}
 	}
 
-	bool Simulator::evaluateDensity(Index_t index1, Index_t index2) {
+	bool Simulator::evaluateDensity(Index2 ind_1, Index2 ind_2) {
 		materie::Material* myMaterial;
 		materie::Material* upNeighbour;
 
-		myMaterial = matFact.getMaterial(domain.at(index1));
-		upNeighbour = matFact.getMaterial(domain.at(index2));
+		myMaterial = matFact.getMaterial(domain.at(ind_1));
+		upNeighbour = matFact.getMaterial(domain.at(ind_2));
 		float dens_1 = myMaterial->getDensity();
 		float dens_2 = upNeighbour->getDensity();
 
 		if (dens_1 < dens_2) {
-			domain.flip(index1, index2);
+			domain.flip(ind_1, ind_2);
 			return true;
 		}
 		return false;
 	}
 
-	unsigned int Simulator::getCellColor(int i, int j) {
-		MatType type = domain.at(i, j);
+	unsigned int Simulator::getCellColor(Index2 ind) {
+		MatType type = domain.at(ind);
 		materie::Material* material = matFact.getMaterial(type);
 		unsigned int color = material->getColor();
 		return color;
@@ -107,40 +117,40 @@ namespace simulate {
 
 	//Actor functions (act on the simulation
 	void Simulator::setCenterSand(void) {
-		int i = (int)floor(nWidth * 0.50);
-		int j = (int)floor(nHeight * 0.250);
+		Index_t i = (Index_t)floor(fieldData.Nx * 0.50);
+		Index_t j = (Index_t)floor(fieldData.Ny * 0.250);
 
-		domain.set(i, j, MatType::Sand);
+		domain.set({ i, j }, MatType::Sand);
 
-		i = (int)floor(nWidth * 0.05);
-		j = (int)floor(nHeight * 0.250);
+		i = (Index_t)floor(fieldData.Nx * 0.05);
+		j = (Index_t)floor(fieldData.Ny * 0.250);
 
-		domain.set(i, j, MatType::Sand);
+		domain.set({ i, j }, MatType::Sand);
 
-		i = (int)floor(nWidth * 0.25);
-		j = (int)floor(nHeight * 0.50);
+		i = (Index_t)floor(fieldData.Nx * 0.25);
+		j = (Index_t)floor(fieldData.Ny * 0.50);
 
-		domain.set(i, j, MatType::Salt);
+		domain.set({ i, j }, MatType::Salt);
 
-		i = (int)floor(nWidth * 0.15);
-		j = (int)floor(nHeight * 0.33);
+		i = (Index_t)floor(fieldData.Nx * 0.15);
+		j = (Index_t)floor(fieldData.Ny * 0.33);
 
-		domain.set(i, j, MatType::Blood);
+		domain.set({ i, j }, MatType::Blood);
 
-		i = (int)floor(nWidth * 0.60);
-		j = (int)floor(nHeight * 0.33);
+		i = (Index_t)floor(fieldData.Nx * 0.60);
+		j = (Index_t)floor(fieldData.Ny * 0.33);
 
-		domain.set(i, j, MatType::Water);
+		domain.set({ i, j }, MatType::Water);
 
-		i = (int)floor(nWidth * 0.75);
-		j = (int)floor(nHeight * 0.250);
+		i = (Index_t)floor(fieldData.Nx * 0.75);
+		j = (Index_t)floor(fieldData.Ny * 0.250);
 
-		domain.set(i, j, MatType::Steam);
+		domain.set({ i, j }, MatType::Steam);
 
-		i = (int)floor(nWidth * 0.15);
-		j = (int)floor(nHeight * 0.750);
+		i = (Index_t)floor(fieldData.Nx * 0.15);
+		j = (Index_t)floor(fieldData.Ny * 0.750);
 
-		domain.set(i, j, MatType::Smoke);
+		domain.set({ i, j }, MatType::Smoke);
 	}
 
 }  ///namspace simulate

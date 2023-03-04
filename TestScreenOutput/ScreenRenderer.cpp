@@ -42,9 +42,9 @@ namespace render {
 
 	void ScreenRenderer::DrawSimulation(RenderState& renderState,simulate::Simulator* simulation) {
 		unsigned int* pixel = (unsigned int*)renderState.memory;
-		for (int y = 0; y < renderState.height; y++) {
-			for (int x = 0; x < renderState.width; x++) {
-				*pixel++ = simulation->getCellColor(x, y);
+		for (Index_t y = 0; y < renderState.height; y++) {
+			for (Index_t x = 0; x < renderState.width; x++) {
+				*pixel++ = simulation->getCellColor({ x, y });
 			}
 		}
 	}

@@ -39,18 +39,18 @@ public:
 	}
 	//Tests the operator overload -
 	TEST_METHOD(Sub) {
-		Index2 ind{ 0,0 };
+		Index2 ind{ 0,1 };
 		Index2 sub{ 0,1 };
-		Index2 truth{ 0,-1 };
+		Index2 truth{ 0,0 };
 		Index2 result = ind - sub;
 		Assert::AreEqual(truth, result);
 	}
 
 	//Tests the operator overload -=
 	TEST_METHOD(SubIs) {
-		Index2 ind{ 0,0 };
+		Index2 ind{ 0,1 };
 		Index2 sub{ 0,1 };
-		Index2 truth{ 0,-1 };
+		Index2 truth{ 0,0 };
 		Index2 result = ind;
 		result -= sub;
 		Assert::AreEqual(truth, result);
