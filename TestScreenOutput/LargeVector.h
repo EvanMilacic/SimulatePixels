@@ -14,10 +14,10 @@ public:
 
 	//getters
 	Index_t size() {
-		return data.size();
+		return static_cast<Index_t>(data.size());
 	}
 
-	double at(Index_t index) {
+	T at(Index_t index) {
 		return data[index];
 	}
 

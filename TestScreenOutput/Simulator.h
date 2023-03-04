@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
 #include "Index2.h"
 #include "Domain.h"
@@ -10,27 +11,26 @@ namespace simulate {
 class Simulator
 {
 private:
-	Index_t nWidth;
-	Index_t nHeight;
+	FieldData fieldData = { 10,10,100 };
 	bool withEdge = false;
-	std::vector<Index_t> activeMaterialsList;
+	std::vector<Index2> activeMaterialsList;
 
 	Domain domain;
 	
 	materie::MaterialFactory matFact;
 
-	bool cellIsActive(Index_t n);
+	bool cellIsActive(Index2 ind);
 	void fillActiveMaterialsList(void);
 	void moveActiveCells(void);
 	void applyPhysics(void);
-	void applyDensity(Index_t index);
-	bool evaluateDensity(Index_t index1, Index_t index2);
+	void applyDensity(Index2 ind);
+	bool evaluateDensity(Index2 ind_1, Index2 ind_2);
 public:
-	Simulator(RenderState renderState) : domain(10,10){
+	Simulator(RenderState renderState) : domain({10,10,100}) {
 		setSize(renderState);
 	}
-	Simulator(Index_t width, Index_t height): domain(10,10) {
-		setSize(width, height);
+	Simulator(FieldData fData) : domain({ 10,10,100 }) {
+		setSize(fData);
 	};
 	~Simulator() {};
 
@@ -39,12 +39,12 @@ public:
 
 
 	//Getters
-	Index_t getNumWidth() { return nWidth; };
-	Index_t getNumHeight() { return nHeight; };
-	Index_t getNumSize() { return nWidth * nHeight; };
+	Index_t getNumWidth() { return fieldData.Nx; };
+	Index_t getNumHeight() { return fieldData.Ny; };
+	Index_t getNumSize() { return fieldData.Size; };
 
-	MatType getCellMaterial(Index_t i, Index_t j) { return domain.at(i, j); };
-	Index_t getCellColor(Index_t i, Index_t j);
+	MatType getCellMaterial(Index2 ind) { return domain.at(ind); };
+	Index_t getCellColor(Index2 ind);
 
 	Domain* giveGuts(void) {
 		return &domain;
@@ -52,12 +52,15 @@ public:
 
 	//Setters
 	void setSize(RenderState renderState) {
-		setSize(renderState.width,renderState.height);
+		FieldData fData = { 
+			static_cast<Index_t>(renderState.width), 
+			static_cast<Index_t>(renderState.height), 
+			static_cast<Index_t>(renderState.width*renderState.height) };
+		setSize(fData);
 	};
-	void setSize(Index_t width, Index_t height) {
-		nWidth = width;
-		nHeight = height;
-		domain.setSize(width, height);
+	void setSize(FieldData fData) {
+		fieldData = fData;
+		domain.setSize(fData);
 	};
 
 	//Actors

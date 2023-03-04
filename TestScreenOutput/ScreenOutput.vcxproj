@@ -99,7 +99,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Domain.cpp" />
-    <ClCompile Include="Field.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="ScreenRenderer.cpp" />
     <ClCompile Include="Simulator.cpp" />
@@ -112,6 +111,7 @@
     <ClInclude Include="Domain.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="FieldData.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="LargeVector.h" />
