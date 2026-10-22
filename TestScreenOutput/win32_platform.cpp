@@ -6,6 +6,10 @@
 #include "ScreenRenderer.h"
 #include "Simulator.h"
 
+// BITMAPINFO is a GDI/Win32-only concept, so it stays local to this platform
+// backend rather than living on the portable RenderState struct.
+static BITMAPINFO bitmap_info;
+
 LRESULT CALLBACK window_callback(HWND hwnd, UINT uMsg,
 	_In_ WPARAM wParam, LPARAM lParam)
 {
@@ -28,12 +32,12 @@ LRESULT CALLBACK window_callback(HWND hwnd, UINT uMsg,
 		if (renderState.memory) VirtualFree(renderState.memory, 0, MEM_RELEASE);
 		renderState.memory = VirtualAlloc(0, buffer_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-		renderState.bitmap_info.bmiHeader.biSize = sizeof(renderState.bitmap_info.bmiHeader);
-		renderState.bitmap_info.bmiHeader.biWidth = renderState.width;
-		renderState.bitmap_info.bmiHeader.biHeight = renderState.height;
-		renderState.bitmap_info.bmiHeader.biPlanes = 1;
-		renderState.bitmap_info.bmiHeader.biBitCount = 32;
-		renderState.bitmap_info.bmiHeader.biCompression = BI_RGB;
+		bitmap_info.bmiHeader.biSize = sizeof(bitmap_info.bmiHeader);
+		bitmap_info.bmiHeader.biWidth = renderState.width;
+		bitmap_info.bmiHeader.biHeight = renderState.height;
+		bitmap_info.bmiHeader.biPlanes = 1;
+		bitmap_info.bmiHeader.biBitCount = 32;
+		bitmap_info.bmiHeader.biCompression = BI_RGB;
 
 	}break;
 	default: {
@@ -85,6 +89,8 @@ int WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 		simulator.SimulateDomain();
 
 		// Render Game
-		StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0, 0, renderState.width, renderState.height, renderState.memory, &renderState.bitmap_info, DIB_RGB_COLORS, SRCCOPY);
+		StretchDIBits(hdc, 0, 0, renderState.width, renderState.height, 0, 0, renderState.width, renderState.height, renderState.memory, &bitmap_info, DIB_RGB_COLORS, SRCCOPY);
 	}
+
+	return 0;
 }

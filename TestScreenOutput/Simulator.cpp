@@ -9,6 +9,17 @@ namespace simulate {
 		applyPhysics();
 	}
 
+	void Simulator::simulateCellAt(Index2 ind) {
+		MatType type = domain.at(ind);
+		materie::Material* material = matFact.getMaterial(type);
+
+		if (material->isDynamic()) {
+			material->UpdatePosition(ind, giveGuts());
+		}
+
+		applyDensity(ind);
+	}
+
 
 	void Simulator::fillActiveMaterialsList(void) {
 

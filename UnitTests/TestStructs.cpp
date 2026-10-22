@@ -18,7 +18,7 @@ namespace Microsoft {
 
 namespace UnitTests {
 
-	TEST_CLASS(TestIndex) {
+	TEST_CLASS(TestIndex2) {
 		//Test class to test the Index2 implementations
 public:
 
@@ -39,18 +39,18 @@ public:
 	}
 	//Tests the operator overload -
 	TEST_METHOD(Sub) {
-		Index2 ind{ 0,1 };
+		Index2 ind{ 0,0 };
 		Index2 sub{ 0,1 };
-		Index2 truth{ 0,0 };
+		Index2 truth{ 0,-1 };
 		Index2 result = ind - sub;
 		Assert::AreEqual(truth, result);
 	}
 
 	//Tests the operator overload -=
 	TEST_METHOD(SubIs) {
-		Index2 ind{ 0,1 };
+		Index2 ind{ 0,0 };
 		Index2 sub{ 0,1 };
-		Index2 truth{ 0,0 };
+		Index2 truth{ 0,-1 };
 		Index2 result = ind;
 		result -= sub;
 		Assert::AreEqual(truth, result);
@@ -65,6 +65,31 @@ public:
 		bool bc = (b == c);
 
 		Assert::AreNotEqual(ab, bc);
+	}
+
+	};
+
+	TEST_CLASS(TestDecompositionData) {
+public:
+	TEST_METHOD(resize0) {
+		DecompositionData data;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(),(size_t)0);
+	}
+	TEST_METHOD(resize255) {
+		size_t resizeValue = 255;
+		DecompositionData data;
+		data.numberOfSubDivisions = resizeValue;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(), resizeValue);
+	}
+
+	TEST_METHOD(resizemin255) {
+		size_t resizeValue = 255;
+		DecompositionData data;
+		data.numberOfSubDivisions = -(int)resizeValue;
+		data.resizeArrays();
+		Assert::AreEqual(data.tags.size(), (size_t)0);
 	}
 
 	};

@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 
+#include "Renderstate.h"
 #include "Index2.h"
 #include "Domain.h"
 #include "Enums.h"
@@ -36,6 +37,12 @@ public:
 
 
 	void SimulateDomain(void);
+
+	// Runs both the move step and the density-equalisation step for a single
+	// cell. Used by the multithreaded subdomain controller (MT_subDomain),
+	// which simulates cells box-by-box rather than via the global
+	// activeMaterialsList.
+	void simulateCellAt(Index2 ind);
 
 
 	//Getters
