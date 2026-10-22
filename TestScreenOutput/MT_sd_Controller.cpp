@@ -7,8 +7,8 @@ namespace multi_t {
 		int fWidth = fController->getNumWidth();
 		int fHeight = fController->getNumHeight();
 
-		double nBoxesWide = fWidth / iSize;
-		double nBoxesHigh = fHeight / jSize;
+		double nBoxesWide = static_cast<double>(fWidth) / iSize;
+		double nBoxesHigh = static_cast<double>(fHeight) / jSize;
 
 		NIsubs = (int)ceil(nBoxesWide);
 		NJsubs = (int)ceil(nBoxesHigh);
