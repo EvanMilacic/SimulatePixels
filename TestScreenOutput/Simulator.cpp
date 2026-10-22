@@ -1,4 +1,5 @@
 #include "Simulator.h"
+#include <cmath>
 
 namespace simulate {
 
@@ -7,6 +8,20 @@ namespace simulate {
 		moveActiveCells();
 
 		applyPhysics();
+	}
+
+	// Runs both the move step and the density-equalisation step for a single
+	// cell. Used by the multithreaded subdomain controller, which simulates
+	// cells box-by-box rather than via the global activeMaterialsList.
+	void Simulator::simulateCellAt(Index_t index) {
+		MatType type = domain.at(index);
+		materie::Material* material = matFact.getMaterial(type);
+
+		if (material->isDynamic()) {
+			material->UpdatePosition(index, giveGuts());
+		}
+
+		applyDensity(index);
 	}
 
 

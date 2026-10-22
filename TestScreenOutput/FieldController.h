@@ -6,17 +6,11 @@ class FieldController
 {
 private:
 	Field* field;
-	int width = 0;
-	int height = 0;
-	int size = 0;
 
 public:
 
 	FieldController(Field *_field) {
 		field = _field;
-		size = field->getSize();
-		height = field->getHeight();
-		width = field->getWidth();
 	}
 
 	~FieldController() {}
@@ -30,9 +24,9 @@ public:
 	void clear(Index2 ind);
 
 	//Getters
-	inline int getSize(void);
-	inline int getWidth(void); 
-	inline int getHeight(void);
+	int getSize(void);
+	int getWidth(void);
+	int getHeight(void);
 	MatType at(int index); 
 	MatType at(int width, int height); 
 	MatType at(Index2 ind);
@@ -40,9 +34,9 @@ public:
 	MatType at(Index2 ind, Index2 motionVector);
 
 	//Indices Tools
-	inline int CalcIndex(int i, int j); 
+	int CalcIndex(int i, int j);
 	int CalcIndex(Index2 ind);
-	inline Index2 CalcIndex2(int index);
+	Index2 CalcIndex2(int index);
 	Index2 CalcIndex2(int index, Index2 motionVector);
 
 

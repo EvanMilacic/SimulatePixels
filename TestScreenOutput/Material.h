@@ -43,7 +43,7 @@ namespace materie {
 		~Material() {};
 
 		virtual void UpdateState(void) {};
-		virtual void UpdatePosition(int index, simulate::Domain* domain) {};
+		virtual void UpdatePosition(int index, simulate::BaseDomain* domain) {};
 		
 		//Getters
 		MatType isType(void) { return type; };

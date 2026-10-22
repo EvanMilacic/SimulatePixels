@@ -1,4 +1,5 @@
 #include "FieldController.h"
+#include <cmath>
 
 //Setters
 void FieldController::set(Index_t index, MatType type) {
@@ -31,11 +32,11 @@ void FieldController::clear(Index2 ind) {
 
 //Getters
 
-inline int FieldController::getSize(void) { return size; }
+int FieldController::getSize(void) { return field->getSize(); }
 
-inline int FieldController::getWidth(void) { return width; }
+int FieldController::getWidth(void) { return field->getWidth(); }
 
-inline int FieldController::getHeight(void) { return height; }
+int FieldController::getHeight(void) { return field->getHeight(); }
 
 MatType FieldController::at(int index) {return field->at(index);}
 
@@ -58,15 +59,16 @@ MatType FieldController::at(Index2 ind, Index2 motionVector) {
 
 //Indices Tools
 
-inline int FieldController::CalcIndex(int i, int j) {
-	return width * j + i;
+int FieldController::CalcIndex(int i, int j) {
+	return getWidth() * j + i;
 }
 
 int FieldController::CalcIndex(Index2 ind) {
 	return CalcIndex(ind.i, ind.j);
 }
 
-inline Index2 FieldController::CalcIndex2(int index) {
+Index2 FieldController::CalcIndex2(int index) {
+	int width = getWidth();
 	Index2 indices{ (int)(index - floor(index / width) * width), (int)floor(index / width) };
 	return indices;
 }

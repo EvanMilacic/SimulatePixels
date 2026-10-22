@@ -22,7 +22,7 @@ public:
 	~Field() {};
 
 	//Setters 
-	inline void set(int index, MatType type); 
+	void set(int index, MatType type); 
 	void setSize(int _width, int _height); 
 
 	//Getters

@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "Structs.h"
+#include "Field.h"
 #include "Domain.h"
 #include "Enums.h"
 #include "MaterialFactory.h"
@@ -15,6 +16,7 @@ private:
 	bool withEdge = false;
 	std::vector<int> activeMaterialsList;
 
+	Field field;
 	BaseDomain domain;
 	
 	materie::MaterialFactory matFact;
@@ -26,16 +28,17 @@ private:
 	void applyDensity(Index_t index);
 	bool evaluateDensity(Index_t index1, Index_t index2);
 public:
-	Simulator(RenderState renderState) : domain(10,10){
+	Simulator(RenderState renderState) : field(10,10), domain(10, 10, &field){
 		setSize(renderState);
 	}
-	Simulator(int width, int height): domain(10,10) {
+	Simulator(int width, int height): field(10,10), domain(10, 10, &field) {
 		setSize(width, height);
 	};
 	~Simulator() {};
 
 
 	void SimulateDomain(void);
+	void simulateCellAt(Index_t index);
 
 
 	//Getters
@@ -57,6 +60,7 @@ public:
 	void setSize(int width, int height) {
 		nWidth = width;
 		nHeight = height;
+		field.setSize(width, height);
 		domain.setSize(width, height);
 	};
 

@@ -1,6 +1,6 @@
 #include "Field.h"
 
-inline void Field::set(int index, MatType type) { typeArray[index] = type; }
+void Field::set(int index, MatType type) { typeArray[index] = type; }
 
 void Field::setSize(int _width, int _height) {
 	width = _width;

@@ -32,11 +32,34 @@ namespace simulate {
 		};
 
 		// Setters
+		void setSize(int width, int height) {
+			nWidth = width;
+			nHeight = height;
+			nSize = nWidth * nHeight;
+		};
+
+		void set(Index_t index, MatType type) { field->set(index, type); };
+		void set(int i, int j, MatType type) { field->set(i, j, type); };
+		void set(Index2 ind, MatType type) { field->set(ind, type); };
+
+		void clear(Index_t index) { field->clear(index); };
+		void clear(Index2 ind) { field->clear(ind); };
 
 		//Getters
 		int getSize(void) { return field->getSize(); };
 		int getWidth(void) { return nWidth; };
 		int getHeight(void) { return nHeight; };
+
+		MatType at(int index) { return field->at(index); };
+		MatType at(int i, int j) { return field->at(i, j); };
+		MatType at(Index2 ind) { return field->at(ind); };
+		MatType at(Index2 ind, MoveDirs direction) { return field->at(ind, LUT_MV.get(direction)); };
+
+		Index_t CalcIndex(int i, int j) { return field->CalcIndex(i, j); };
+		Index_t CalcIndex(Index2 ind) { return field->CalcIndex(ind); };
+
+		void flip(int index_1, int index_2) { field->flip(index_1, index_2); };
+		void flip(Index2 ind_1, Index2 ind_2) { field->flip(ind_1, ind_2); };
 
 		bool isOnEdge(Index_t index);
 		bool isOnEdge(Index2 ind);

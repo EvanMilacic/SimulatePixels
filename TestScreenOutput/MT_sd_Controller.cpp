@@ -1,4 +1,5 @@
 #include "MT_sd_Controller.h"
+#include <cmath>
 
 namespace multi_t {
 
@@ -23,8 +24,8 @@ namespace multi_t {
 
 		for (int n = 0; n < nSubs; n++) {
 
-			y = (int)floor(n / nBoxesWide);
-			x = n - y;
+			y = n / NIsubs;
+			x = n % NIsubs;
 
 			StartI = x * iSize;
 			StartJ = y * jSize;
@@ -63,34 +64,21 @@ namespace multi_t {
 
 	void MT_sd_Controller::multiThread(int nThreads) {
 
-#pragma omp parallel for
-		for (int n = 0; n < nSubs; n += 4) {
-			if (domainsList[n].tag == 1) {
-				domainsList[n].simulateSubDomain();
+		// Red-black (4-colour) checkerboard scheme: boxes carrying the same
+		// tag never touch each other (tags are assigned from (x%2, y%2) in
+		// divideField()), so every colour's pass can run in parallel without
+		// adjacent boxes racing on shared border cells. Iterating with a
+		// fixed stride of 4 over the flat domainsList only lines up with the
+		// tags when NIsubs is even, so instead we scan every box per pass and
+		// just skip the ones that don't match the current colour.
+		for (int tag = 1; tag <= 4; tag++) {
+#pragma omp parallel for num_threads(nThreads)
+			for (int n = 0; n < nSubs; n++) {
+				if (domainsList[n].tag == tag) {
+					domainsList[n].simulateSubDomain();
+				}
 			}
 		}
-
-#pragma omp parallel for
-		for (int n = 1; n < nSubs; n += 4) {
-			if (domainsList[n].tag == 2) {
-				domainsList[n].simulateSubDomain();
-			}
-		}
-
-#pragma omp parallel for
-		for (int n = 2; n < nSubs; n += 4) {
-			if (domainsList[n].tag == 3) {
-				domainsList[n].simulateSubDomain();
-			}
-		}
-
-#pragma omp parallel for
-		for (int n = 3; n < nSubs; n += 4) {
-			if (domainsList[n].tag == 4) {
-				domainsList[n].simulateSubDomain();
-			}
-		}
-
 
 	}
 
