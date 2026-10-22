@@ -11,7 +11,7 @@
 
 #include <cstdlib>
 
-#include "Structs.h"
+#include "Renderstate.h"
 #include "Globals.h"
 #include "ScreenRenderer.h"
 #include "Simulator.h"
@@ -52,7 +52,11 @@ namespace {
 		}
 		allocateBuffer(width, height);
 		if (simulator) {
-			simulator->setSize(width, height);
+			FieldData fData = {
+				static_cast<Index_t>(width),
+				static_cast<Index_t>(height),
+				static_cast<Index_t>(width) * static_cast<Index_t>(height) };
+			simulator->setSize(fData);
 		}
 	}
 

@@ -2,81 +2,90 @@
 #include <vector>
 
 #include "Globals.h"
+#include "Defines.h"
 #include "Enums.h"
 #include "MyMath.h"
-#include "FieldController.h"
+#include "Index2.h"
+#include "Motion2.h"
+#include "Field.h"
+#include "FieldData.h"
 
 namespace simulate {
 
-	class BaseDomain
+	class Domain
 	{
 	private:
-		int nWidth;
-		int nHeight;
-		int nSize;
+		FieldData fieldData = { 0,0,0 };
+		Field<MatType> field;
 
-		FieldController *field;
-		LUT_MotionVector LUT_MV;
-
-		bool isDefault(Index_t index) {
-			return (field->at(index) == MatType::Default);
+		Index2 CalcIndex2(Index2 ind, MoveDirs direction) {
+			Motion2 dir = getMotionVector(direction);
+			ind += dir;
+			return ind;
 		}
 
+		bool isDefault(Index2 index) {
+			return (field.at(index) == MatType::Default);
+		}
+
+
 	public:
-		BaseDomain(int width, int height, Field *_field) { 
-			field = new FieldController(_field);
-			setSize(width, height); 
-		};
-		~BaseDomain() {
-			delete(field);
-		};
+		Domain(FieldData _fieldData) { 
+			fieldData = _fieldData;
+			field.resize(_fieldData); };
+		~Domain() {};
+
 
 		// Setters
-		void setSize(int width, int height) {
-			nWidth = width;
-			nHeight = height;
-			nSize = nWidth * nHeight;
-		};
+		void setSize(FieldData _fieldData) {
+			fieldData = _fieldData;
+			field.resize(_fieldData);
+		}
 
-		void set(Index_t index, MatType type) { field->set(index, type); };
-		void set(int i, int j, MatType type) { field->set(i, j, type); };
-		void set(Index2 ind, MatType type) { field->set(ind, type); };
+		void set(Index2 ind, MatType type) {
+			field.set(ind, type);
+		}
 
-		void clear(Index_t index) { field->clear(index); };
-		void clear(Index2 ind) { field->clear(ind); };
+		void clear(Index2 ind) {
+			set(ind, MatType::Default);
+		}
 
 		//Getters
-		int getSize(void) { return field->getSize(); };
-		int getWidth(void) { return nWidth; };
-		int getHeight(void) { return nHeight; };
+		Index_t getSize(void) { return field.size(); };
+		Index_t getWidth(void) { return fieldData.Nx; };
+		Index_t getHeight(void) { return fieldData.Ny; };
 
-		MatType at(int index) { return field->at(index); };
-		MatType at(int i, int j) { return field->at(i, j); };
-		MatType at(Index2 ind) { return field->at(ind); };
-		MatType at(Index2 ind, MoveDirs direction) { return field->at(ind, LUT_MV.get(direction)); };
-
-		Index_t CalcIndex(int i, int j) { return field->CalcIndex(i, j); };
-		Index_t CalcIndex(Index2 ind) { return field->CalcIndex(ind); };
-
-		void flip(int index_1, int index_2) { field->flip(index_1, index_2); };
-		void flip(Index2 ind_1, Index2 ind_2) { field->flip(ind_1, ind_2); };
-
-		bool isOnEdge(Index_t index);
 		bool isOnEdge(Index2 ind);
+		bool isInBounds(Index2 ind);
+
+		MatType at(Index2 ind) {
+			return field.at(ind);
+		}
+
+		MatType at(Index2 ind, MoveDirs direction) {
+			Index2 index = CalcIndex2(ind,direction);
+			return at(index);
+		}
 
 		//move operations
 		bool move(Index2 ind, MoveDirs dir);
-		bool move(int index, MoveDirs dir);
-		bool move(int index, MoveDirs dir, int stepLength);
+		bool move(Index2 ind, MoveDirs dir, Index_t stepLength);
 
-		Index_t getProjectionIndex(Index_t index, MoveDirs direction) {
-			Index2 motion = LUT_MV.get(direction);
-			Index_t targetIndex = getDirIndex(index, motion);
+		void flip(Index2 ind_1, Index2 ind_2) {
+			MatType temp = field.at(ind_1);
+			field.set(ind_1, field.at(ind_2));
+			field.set(ind_2, temp);
+		}
+
+		Index2 getProjectionIndex(Index2 ind, MoveDirs direction) {
+			Motion2 motion = getMotionVector(direction);
+			Index2 targetIndex = getDirIndex(ind, motion);
 			return targetIndex;
 		}
 
 		private:
-		Index_t getDirIndex(Index_t index, Index2 motion);
+		Index2 getDirIndex(Index2 ind, Motion2 motion);
+		Motion2 getMotionVector(MoveDirs dir);
 
 	}; //class Domain
 

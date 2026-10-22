@@ -1,5 +1,6 @@
 #pragma once
-#include "Structs.h"
+#include "Defines.h"
+#include "Renderstate.h"
 
 static bool running = true;
 static RenderState renderState;

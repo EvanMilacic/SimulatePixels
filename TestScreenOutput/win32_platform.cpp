@@ -1,6 +1,6 @@
 #include <Windows.h>
 
-#include "Structs.h"
+#include "Renderstate.h"
 #include "Globals.h"
 
 #include "ScreenRenderer.h"

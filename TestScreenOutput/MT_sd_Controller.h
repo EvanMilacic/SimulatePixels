@@ -29,9 +29,9 @@ namespace multi_t {
 
 	public:
 
-		inline Index2 getIJsize(void) { Index2 IJsize = { iSize, jSize }; return IJsize; }
+		inline Index2 getIJsize(void) { Index2 IJsize = { static_cast<Index_t>(iSize), static_cast<Index_t>(jSize) }; return IJsize; }
 		inline int getSubs(void) {	return nSubs;}
-		inline Index2 getIJsubs(void) { Index2 IJsubs = { NIsubs, NJsubs }; return IJsubs;}
+		inline Index2 getIJsubs(void) { Index2 IJsubs = { static_cast<Index_t>(NIsubs), static_cast<Index_t>(NJsubs) }; return IJsubs;}
 
 	};
 

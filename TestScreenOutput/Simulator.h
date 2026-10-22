@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
-#include "Structs.h"
-#include "Field.h"
+#include "Renderstate.h"
+#include "Index2.h"
 #include "Domain.h"
 #include "Enums.h"
 #include "MaterialFactory.h"
@@ -11,57 +12,62 @@ namespace simulate {
 class Simulator
 {
 private:
-	int nWidth;
-	int nHeight;
+	FieldData fieldData = { 10,10,100 };
 	bool withEdge = false;
-	std::vector<int> activeMaterialsList;
+	std::vector<Index2> activeMaterialsList;
 
-	Field field;
-	BaseDomain domain;
+	Domain domain;
 	
 	materie::MaterialFactory matFact;
 
-	bool cellIsActive(int n);
+	bool cellIsActive(Index2 ind);
 	void fillActiveMaterialsList(void);
 	void moveActiveCells(void);
 	void applyPhysics(void);
-	void applyDensity(Index_t index);
-	bool evaluateDensity(Index_t index1, Index_t index2);
+	void applyDensity(Index2 ind);
+	bool evaluateDensity(Index2 ind_1, Index2 ind_2);
 public:
-	Simulator(RenderState renderState) : field(10,10), domain(10, 10, &field){
+	Simulator(RenderState renderState) : domain({10,10,100}) {
 		setSize(renderState);
 	}
-	Simulator(int width, int height): field(10,10), domain(10, 10, &field) {
-		setSize(width, height);
+	Simulator(FieldData fData) : domain({ 10,10,100 }) {
+		setSize(fData);
 	};
 	~Simulator() {};
 
 
 	void SimulateDomain(void);
-	void simulateCellAt(Index_t index);
+
+	// Runs both the move step and the density-equalisation step for a single
+	// cell. Used by the multithreaded subdomain controller (MT_subDomain),
+	// which simulates cells box-by-box rather than via the global
+	// activeMaterialsList.
+	void simulateCellAt(Index2 ind);
 
 
 	//Getters
-	int getNumWidth() { return nWidth; };
-	int getNumHeight() { return nHeight; };
-	int getNumSize() { return nWidth * nHeight; };
+	Index_t getNumWidth() { return fieldData.Nx; };
+	Index_t getNumHeight() { return fieldData.Ny; };
+	Index_t getNumSize() { return fieldData.Size; };
 
-	MatType getCellMaterial(int i, int j) { return domain.at(i, j); };
-	unsigned int getCellColor(int i, int j);
+	MatType getCellMaterial(Index2 ind) { return domain.at(ind); };
+	Index_t getCellColor(Index2 ind);
 
-	BaseDomain* giveGuts(void) {
+	Domain* giveGuts(void) {
 		return &domain;
 	}
 
 	//Setters
 	void setSize(RenderState renderState) {
-		setSize(renderState.width,renderState.height);
+		FieldData fData = { 
+			static_cast<Index_t>(renderState.width), 
+			static_cast<Index_t>(renderState.height), 
+			static_cast<Index_t>(renderState.width*renderState.height) };
+		setSize(fData);
 	};
-	void setSize(int width, int height) {
-		nWidth = width;
-		nHeight = height;
-		field.setSize(width, height);
-		domain.setSize(width, height);
+	void setSize(FieldData fData) {
+		fieldData = fData;
+		domain.setSize(fData);
 	};
 
 	//Actors

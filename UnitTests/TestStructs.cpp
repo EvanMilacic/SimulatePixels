@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../TestScreenOutput/Structs.h"
+#include "../TestScreenOutput/Index2.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

@@ -111,27 +111,27 @@ original Win32/GDI entry point still works:
 ### Unit tests
 
 [UnitTests/](UnitTests) uses MSTest's `CppUnitTestFramework` and requires the
-**Test Development** workload component in Visual Studio. Note:
-`TestDomain.cpp` currently targets an older `BaseDomain` API (a 2-argument
-constructor, before the `Field`/`FieldController` split) and will need to be
-updated before it builds against the current `TestScreenOutput` sources.
+**Test Development** workload component in Visual Studio.
 
 ## Project layout
 
 - [TestScreenOutput/](TestScreenOutput) — the simulation itself:
-  - `Field` / `FieldController` — owns the raw grid of `MatType` cells and
-    low-level indexing/get/set/flip operations.
-  - `Domain` (`BaseDomain`) — the single-threaded view over a `Field`, used
-    by the main `Simulator` loop (movement, edge handling, density swaps).
-  - `DomainInterface` / `DomainController` — an in-progress interface layer
-    intended to unify `BaseDomain` and the multithreaded sub-domains behind
-    one API.
+  - `Index2` / `Motion2` — a 2D cell position (`Index_t`, unsigned) and a 2D
+    movement delta (signed `int`), respectively. `FieldData` describes a
+    field's width/height/size.
+  - `Field<T>` / `LargeVector<T>` — a templated 2D grid of `T` built on a
+    flat `std::vector<T>` wrapper, addressable by either a linear `Index_t`
+    or an `Index2`.
+  - `Domain` — the single-threaded view over a `Field<MatType>`, used by the
+    main `Simulator` loop (movement, edge handling, density swaps), entirely
+    `Index2`-based (no linear indexing exposed).
   - `MT_sd_Controller` / `MT_subDomain` — divides the field into a grid of
     boxes and simulates them in parallel using a 4-colour (red/black-style)
     checkerboard scheme via OpenMP, so adjacent boxes are never updated at
-    the same time.
-  - `Simulator` — owns the `Field`/`Domain`, the active-cell list, and runs
-    the per-frame move + density simulation passes.
+    the same time. Each sub-domain iterates its `Index2` range directly and
+    calls `Simulator::simulateCellAt(Index2)` per cell.
+  - `Simulator` — owns the `Domain`, the active-cell list, and runs the
+    per-frame move + density simulation passes.
   - `Sand.h`, `Water.h`, `Salt.h`, `Fire.h`, `Wood.h`, `Smoke.h`, `Steam.h`,
     `Blood.h`, `Default.h` — per-material behaviour (`Material` subclasses).
   - `platform_sdl.cpp` — cross-platform entry point (Windows/Linux/browser)
