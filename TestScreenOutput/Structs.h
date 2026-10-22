@@ -1,13 +1,14 @@
 #pragma once
-#include <Windows.h>
 #include <vector>
 #include "Enums.h"
 #include "UserDefs.h"
 
+// Platform-agnostic description of the render target: a width*height buffer
+// of packed 0xRRGGBB pixels (same layout DrawSimulation() writes), owned and
+// allocated by whichever platform backend is in use (Win32/GDI, SDL2, ...).
 struct RenderState {
 	int height, width;
 	void* memory;
-	BITMAPINFO bitmap_info;
 };
 
 struct Index2 {

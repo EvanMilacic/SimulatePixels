@@ -2,38 +2,111 @@
 
 A pixel-based falling-sand simulation where every pixel is a cell made of a
 material (sand, water, salt, fire, wood, smoke, steam, blood, ...), each with
-its own density, movement rules and interactions. Rendering and windowing use
-the raw Win32 API (`CreateWindow`, `StretchDIBits`), and the simulation field
-can optionally be split into sub-domains and advanced in parallel with OpenMP
+its own density, movement rules and interactions. The simulation field can
+optionally be split into sub-domains and advanced in parallel with OpenMP
 (see `MT_sd_Controller` / `MT_subDomain`).
 
-There is currently no checked-in `.sln`/`.vcxproj` or Makefile, so pick one of
-the two options below depending on your platform.
+Rendering/windowing is built on **SDL2** via a CMake build, so the same
+source builds and runs natively on **Windows** and **Linux**, and also
+compiles to **WebAssembly** (runs in the browser) via Emscripten. A legacy
+Win32/GDI-only entry point (`win32_platform.cpp`) is also still present for
+anyone who specifically wants a pure Win32 build in Visual Studio, but it's
+not part of the CMake build below.
 
-## Option A: Build on Windows with Visual Studio (recommended)
+## Option A: Native build (Windows or Linux)
 
-This is the intended target platform — the app opens a real Win32 window and
-draws directly into it.
+### 1. Install prerequisites
 
-1. Install **Visual Studio** (2019 or later) with the **Desktop development
-   with C++** workload.
-2. Create a new **Windows Desktop Application (C++)** project (or an empty
-   C++ project) and add all `.cpp`/`.h` files from [TestScreenOutput/](TestScreenOutput)
-   to it.
-3. Project Properties → **C/C++ → Language**:
-   - **C++ Language Standard**: ISO C++17 or later (the code uses `inline`
-     member layout and modern initializer syntax that needs at least C++17).
-   - **Open MP Support**: **Yes (/openmp)** — required for the
-     `#pragma omp parallel for` loops in `MT_sd_Controller.cpp`.
-4. Project Properties → **Linker → System**:
-   - **SubSystem**: Windows (`/SUBSYSTEM:WINDOWS`), since the entry point is
-     `WinMain`, not `main`.
-5. Build the project (Ctrl+Shift+B) and run it (F5). A window should open and
-   the simulation starts automatically, dropping sand/water/salt/blood/
-   steam/smoke at fixed points on the field (see `Simulator::setCenterSand`).
+- **CMake** (3.13+) and a C++17 compiler.
+- **SDL2** development libraries:
+  - Linux (Debian/Ubuntu): `sudo apt install libsdl2-dev cmake build-essential`
+  - Windows: easiest via [vcpkg](https://github.com/microsoft/vcpkg):
+    ```powershell
+    vcpkg install sdl2:x64-windows
+    ```
+    (or install SDL2 some other way and make sure `find_package(SDL2)` can
+    find it — e.g. set `CMAKE_TOOLCHAIN_FILE` to vcpkg's
+    `scripts/buildsystems/vcpkg.cmake`).
 
-If you'd rather add a proper `.sln`/`.vcxproj` to the repo so this is a
-one-click build, let me know and I can generate one.
+### 2. Configure and build
+
+From the repo root:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+# if using vcpkg on Windows, add:
+#   -DCMAKE_TOOLCHAIN_FILE=<path-to-vcpkg>/scripts/buildsystems/vcpkg.cmake
+cmake --build build -j
+```
+
+This produces a `SimulatePixels` (or `SimulatePixels.exe` on Windows)
+executable inside `build/`.
+
+### 3. Run it
+
+```bash
+./build/SimulatePixels        # Linux
+.\build\SimulatePixels.exe    # Windows
+```
+
+A resizable window opens and the simulation starts immediately: sand, salt,
+blood, water, steam and smoke are continuously dropped at fixed points (see
+`Simulator::setCenterSand`) and fall/flow/settle according to each
+material's density and movement rules. Close the window to exit.
+
+## Option B: Run it in the browser (WebAssembly via Emscripten)
+
+The same CMake project builds with [Emscripten](https://emscripten.org/)
+instead of a native compiler — no code changes needed, just a different
+toolchain.
+
+1. Install the official **emsdk** toolchain (recommended — the `emscripten`
+   package in Debian/Ubuntu's apt repos ships with a read-only, "frozen"
+   cache that cannot fetch the SDL2 port and fails to link; `emsdk` doesn't
+   have this problem):
+   ```bash
+   git clone https://github.com/emscripten-core/emsdk.git
+   cd emsdk
+   ./emsdk install latest
+   ./emsdk activate latest
+   source ./emsdk_env.sh   # run this in every new shell before building
+   ```
+2. Configure and build with the Emscripten CMake wrapper:
+   ```bash
+   emcmake cmake -S . -B build-web -DCMAKE_BUILD_TYPE=Release
+   cmake --build build-web -j
+   ```
+   This produces `build-web/SimulatePixels.html` (plus matching `.js`/`.wasm`
+   files) — Emscripten's SDL2 port is used automatically, so no system SDL2
+   package is required for this build. Note: OpenMP is intentionally not
+   linked in for this target (it would require `-pthread`, `SharedArrayBuffer`
+   and cross-origin isolation headers), so the `#pragma omp parallel for` in
+   `MT_sd_Controller.cpp` is simply ignored by the compiler and the
+   simulation runs single-threaded in the browser.
+3. Serve the output directory over HTTP (opening the `.html` file directly
+   via `file://` won't work due to browser restrictions on loading `.wasm`):
+   ```bash
+   cd build-web
+   python3 -m http.server 8000
+   ```
+4. Open `http://localhost:8000/SimulatePixels.html` in a browser. The
+   simulation runs on an HTML5 canvas, driven by the browser's animation
+   loop.
+
+## Legacy option: pure Win32/GDI build in Visual Studio
+
+If you specifically want to avoid the SDL2 dependency on Windows, the
+original Win32/GDI entry point still works:
+
+1. Install **Visual Studio** (2019+) with the **Desktop development with
+   C++** workload.
+2. Create a new C++ project and add every `.cpp`/`.h` file from
+   [TestScreenOutput/](TestScreenOutput) **except `platform_sdl.cpp`**.
+3. Project Properties → **C/C++ → Language**: set **C++ Language Standard**
+   to ISO C++17 (or later) and **Open MP Support** to **Yes (/openmp)**.
+4. Project Properties → **Linker → System**: set **SubSystem** to
+   **Windows** (`/SUBSYSTEM:WINDOWS`), since the entry point is `WinMain`.
+5. Build (Ctrl+Shift+B) and run (F5).
 
 ### Unit tests
 
@@ -42,36 +115,6 @@ one-click build, let me know and I can generate one.
 `TestDomain.cpp` currently targets an older `BaseDomain` API (a 2-argument
 constructor, before the `Field`/`FieldController` split) and will need to be
 updated before it builds against the current `TestScreenOutput` sources.
-
-## Option B: Cross-compile on Linux (for quick checks, no window/rendering)
-
-You can compile and link the whole project into a Windows `.exe` using
-`mingw-w64`, which is useful for verifying the code builds without needing a
-Windows machine. You won't be able to run the resulting `.exe` natively on
-Linux (it needs a Win32 GUI), but Wine can run it if you have a display.
-
-1. Install the cross-compiler and Windows headers/libs:
-   ```bash
-   sudo apt install g++-mingw-w64-x86-64 mingw-w64-x86-64-dev
-   ```
-2. Build and link everything from [TestScreenOutput/](TestScreenOutput):
-   ```bash
-   cd TestScreenOutput
-   x86_64-w64-mingw32-g++ -std=c++17 -fopenmp -O2 \
-     *.cpp -o SimulatePixels.exe -lgdi32 -luser32
-   ```
-   > On a case-sensitive filesystem (e.g. Linux), mingw's header is named
-   > `windows.h` (lowercase) while the source includes `<Windows.h>`, so the
-   > compiler won't find it by default. Point it at a shim directory with a
-   > correctly-cased symlink:
-   > ```bash
-   > mkdir -p /tmp/winhdr && ln -sf /usr/x86_64-w64-mingw32/include/windows.h /tmp/winhdr/Windows.h
-   > x86_64-w64-mingw32-g++ -std=c++17 -fopenmp -O2 -I /tmp/winhdr *.cpp -o SimulatePixels.exe -lgdi32 -luser32
-   > ```
-3. (Optional) Run it under Wine if available:
-   ```bash
-   wine SimulatePixels.exe
-   ```
 
 ## Project layout
 
@@ -91,8 +134,15 @@ Linux (it needs a Win32 GUI), but Wine can run it if you have a display.
     the per-frame move + density simulation passes.
   - `Sand.h`, `Water.h`, `Salt.h`, `Fire.h`, `Wood.h`, `Smoke.h`, `Steam.h`,
     `Blood.h`, `Default.h` — per-material behaviour (`Material` subclasses).
-  - `win32_platform.cpp` — Win32 entry point, window creation and the main
-    loop.
-  - `ScreenRenderer` — draws the simulation field into the window's backing
-    bitmap.
+  - `platform_sdl.cpp` — cross-platform entry point (Windows/Linux/browser)
+    built on SDL2: window/canvas creation, the main loop, and uploading the
+    simulation's pixel buffer to a texture each frame.
+  - `win32_platform.cpp` — legacy Win32-only entry point (GDI `CreateWindow`
+    + `StretchDIBits`), not used by the CMake build.
+  - `ScreenRenderer` — draws the simulation field into the platform's
+    backing pixel buffer (`RenderState`), independent of how that buffer
+    ends up on screen.
 - [UnitTests/](UnitTests) — MSTest-based unit tests (Visual Studio only).
+- [CMakeLists.txt](CMakeLists.txt) — builds the SDL2 platform layer plus the
+  simulation core natively, or via Emscripten for the browser.
+
